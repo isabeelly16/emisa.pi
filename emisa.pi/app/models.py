@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Pet(models.Model):
 
     ESPECIES = [
@@ -63,6 +64,8 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.nome
+
+
 class SolicitacaoAdocao(models.Model):
 
     STATUS = [
@@ -80,35 +83,26 @@ class SolicitacaoAdocao(models.Model):
     usuario = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='solicitacoes_adocao'
+        related_name='solicitacoes_adocao',
+        null=True,
+        blank=True
     )
 
     nome_adotante = models.CharField(max_length=100)
+
     email = models.EmailField()
 
-    telefone = models.CharField(
-        max_length=20
-    )
+    telefone = models.CharField(max_length=20)
 
-    ja_teve_animais = models.BooleanField(
-        default=False
-    )
+    ja_teve_animais = models.BooleanField(default=False)
 
-    local_moradia = models.CharField(
-        max_length=200
-    )
+    local_moradia = models.CharField(max_length=200)
 
-    possui_espaco = models.BooleanField(
-        default=False
-    )
+    possui_espaco = models.BooleanField(default=False)
 
-    todos_concordam = models.BooleanField(
-        default=False
-    )
+    todos_concordam = models.BooleanField(default=False)
 
-    consegue_cuidar = models.BooleanField(
-        default=False
-    )
+    consegue_cuidar = models.BooleanField(default=False)
 
     motivo = models.TextField()
 
@@ -124,3 +118,56 @@ class SolicitacaoAdocao(models.Model):
 
     def __str__(self):
         return f'{self.nome_adotante} - {self.pet.nome}'
+
+
+class Favorito(models.Model):
+
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favoritos'
+    )
+
+    pet = models.ForeignKey(
+        Pet,
+        on_delete=models.CASCADE,
+        related_name='favoritado_por'
+    )
+
+    data_adicionado = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        unique_together = ('usuario', 'pet')
+
+    def __str__(self):
+        return f'{self.usuario.username} - {self.pet.nome}'
+
+
+class Mensagem(models.Model):
+
+    remetente = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='mensagens_enviadas'
+    )
+
+    destinatario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='mensagens_recebidas'
+    )
+
+    mensagem = models.TextField()
+
+    data_envio = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    lida = models.BooleanField(
+        default=False
+    )
+
+    def __str__(self):
+        return f'{self.remetente.username} → {self.destinatario.username}'

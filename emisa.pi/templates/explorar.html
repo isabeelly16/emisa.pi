@@ -77,12 +77,22 @@
 
         <div class="opcoes">
 
-            <button class="filtro ativo" data-filtro="especie" data-valor="cao">
+            <button
+                type="button"
+                class="filtro ativo"
+                data-filtro="especie"
+                data-valor="cao"
+            >
                 <i class="fa-solid fa-dog"></i>
                 Cães
             </button>
 
-            <button class="filtro" data-filtro="especie" data-valor="gato">
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="especie"
+                data-valor="gato"
+            >
                 <i class="fa-solid fa-cat"></i>
                 Gatos
             </button>
@@ -99,17 +109,32 @@
 
         <div class="opcoes tres">
 
-            <button class="filtro" data-filtro="porte" data-valor="pequeno">
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="porte"
+                data-valor="pequeno"
+            >
                 <i class="fa-solid fa-paw"></i>
                 Pequeno
             </button>
 
-            <button class="filtro" data-filtro="porte" data-valor="medio">
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="porte"
+                data-valor="medio"
+            >
                 <i class="fa-solid fa-paw"></i>
                 Médio
             </button>
 
-            <button class="filtro" data-filtro="porte" data-valor="grande">
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="porte"
+                data-valor="grande"
+            >
                 <i class="fa-solid fa-paw"></i>
                 Grande
             </button>
@@ -126,12 +151,22 @@
 
         <div class="opcoes">
 
-            <button class="filtro" data-filtro="idade" data-valor="filhote">
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="idade"
+                data-valor="filhote"
+            >
                 <i class="fa-solid fa-paw"></i>
                 Filhote
             </button>
 
-            <button class="filtro" data-filtro="idade" data-valor="adulto">
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="idade"
+                data-valor="adulto"
+            >
                 <i class="fa-solid fa-paw"></i>
                 Adulto
             </button>
@@ -146,10 +181,11 @@
 
         <span>
             <i class="fa-solid fa-heart"></i>
-            <strong id="quantidade">{{ pets|length }}</strong> pets encontrados
+            <strong id="quantidade">{{ pets|length }}</strong>
+            pets encontrados
         </span>
 
-        <button>
+        <button type="button">
             Mais recentes
             <i class="fa-solid fa-chevron-down"></i>
         </button>
@@ -161,95 +197,141 @@
     <section class="pets-grid" id="pets">
 
         {% for pet in pets %}
-    
+
         <a
-    href="{% url 'perfil_pet' pet.id %}"
-    class="pet-card"
-    data-nome="{{ pet.nome }}"
-    data-especie="{{ pet.especie }}"
-    data-porte="{{ pet.porte }}"
-    data-idade="{{ pet.idade }}"
-    a>
-    
+            href="{% url 'perfil_pet' pet.id %}"
+            class="pet-card"
+            data-nome="{{ pet.nome }}"
+            data-especie="{{ pet.especie }}"
+            data-porte="{{ pet.porte }}"
+            data-idade="{{ pet.idade }}"
+        >
+
             <div class="pet-foto">
-    
+
                 {% if pet.foto %}
-                    <img src="{{ pet.foto.url }}" alt="{{ pet.nome }}">
+
+                    <img
+                        src="{{ pet.foto.url }}"
+                        alt="Foto de {{ pet.nome }}"
+                    >
+
                 {% else %}
-    
+
                     {% if pet.especie == 'cao' %}
-                        🐶
+                        <span style="font-size: 55px;">🐶</span>
                     {% else %}
-                        🐱
+                        <span style="font-size: 55px;">🐱</span>
                     {% endif %}
-    
+
                 {% endif %}
-    
-                <button class="favorito">
-                    <i class="fa-regular fa-heart"></i>
-                </button>
-    
+
+
+                <!-- FAVORITO -->
+                <form
+                    method="POST"
+                    action="{% url 'favoritar_pet' pet.id %}"
+                    class="favorito-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="favorito"
+                        aria-label="Favoritar {{ pet.nome }}"
+                    >
+
+                        {% if pet.id in favoritos_ids %}
+                            <i class="fa-solid fa-heart"></i>
+                        {% else %}
+                            <i class="fa-regular fa-heart"></i>
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
             </div>
-    
-    
+
+
             <div class="pet-info">
-    
+
                 <h3>{{ pet.nome }}</h3>
-    
+
                 <p>
                     <i class="fa-solid fa-location-dot"></i>
                     {{ pet.distancia }} km
                 </p>
-    
-    
+
                 <div class="pet-status">
-    
+
                     {% if pet.vacinado %}
                         <span>✓ Vacinado</span>
                     {% endif %}
-    
+
                     {% if pet.castrado %}
                         <span>✓ Castrado</span>
                     {% endif %}
-    
+
                 </div>
-    
+
             </div>
-    
-        </article>
-    
+
+        </a>
+
         {% empty %}
-    
+
             <p>Nenhum pet disponível no momento.</p>
-    
+
         {% endfor %}
-    
+
     </section>
 
 
     <!-- MENU INFERIOR -->
     <nav class="menu-inferior">
 
-        <a class="menu-item ativo">
+        <a
+            href="{% url 'explorar' %}"
+            class="menu-item ativo"
+        >
             <i class="fa-solid fa-house"></i>
             <span>Explorar</span>
         </a>
 
-        <a class="menu-item">
+
+        <a
+            href="{% url 'favoritos' %}"
+            class="menu-item"
+        >
             <i class="fa-regular fa-heart"></i>
             <span>Favoritos</span>
         </a>
 
-        <a class="botao-anunciar">
-            <i class="fa-solid fa-paw"></i>
+
+        <a
+            href="{% url 'minhas_solicitacoes' %}"
+            class="menu-item"
+        >
+            <i class="fa-solid fa-file-signature"></i>
+            <span>Solicitações</span>
         </a>
 
-        <a class="menu-item">
+
+        <a
+            href="{% url 'mensagens' %}"
+            class="menu-item"
+        >
             <i class="fa-regular fa-comment"></i>
             <span>Mensagens</span>
         </a>
 
-        <a class="menu-item">
+
+        <a
+            href="{% url 'perfil_usuario' %}"
+            class="menu-item"
+        >
             <i class="fa-regular fa-user"></i>
             <span>Perfil</span>
         </a>
@@ -272,11 +354,17 @@ let filtros = {
 };
 
 
+// =========================================================
 // PESQUISA
+// =========================================================
+
 pesquisa.addEventListener("input", filtrarPets);
 
 
+// =========================================================
 // FILTROS
+// =========================================================
+
 document.querySelectorAll(".filtro").forEach(botao => {
 
     botao.addEventListener("click", () => {
@@ -307,7 +395,10 @@ document.querySelectorAll(".filtro").forEach(botao => {
 });
 
 
-// FILTRAR
+// =========================================================
+// FILTRAR PETS
+// =========================================================
+
 function filtrarPets() {
 
     const texto = pesquisa.value.toLowerCase();
@@ -333,6 +424,7 @@ function filtrarPets() {
             !filtros.idade ||
             pet.dataset.idade === filtros.idade;
 
+
         if (
             combinaPesquisa &&
             combinaEspecie &&
@@ -354,23 +446,6 @@ function filtrarPets() {
     quantidade.textContent = encontrados;
 
 }
-
-
-// FAVORITOS
-document.querySelectorAll(".favorito").forEach(botao => {
-
-    botao.addEventListener("click", event => {
-
-        event.stopPropagation();
-
-        const icone = botao.querySelector("i");
-
-        icone.classList.toggle("fa-regular");
-        icone.classList.toggle("fa-solid");
-
-    });
-
-});
 
 </script>
 

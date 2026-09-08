@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Favoritos - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+<div class="favoritos-container">
+
+    <!-- TOPO -->
+    <header class="favoritos-topo">
+
+        <a href="{% url 'explorar' %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <h1>Favoritos</h1>
+            <span>EMISA</span>
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <!-- CONTEÚDO -->
+    <main class="favoritos-conteudo">
+
+        <div class="favoritos-titulo">
+
+            <h2>Pets que você gostou</h2>
+
+            <p>
+                Aqui ficam os animais que você salvou como favoritos.
+            </p>
+
+        </div>
+
+
+        {% if favoritos %}
+
+            <section class="lista-favoritos">
+
+                {% for favorito in favoritos %}
+
+                    <a
+                        href="{% url 'perfil_pet' favorito.pet.id %}"
+                        class="favorito-card"
+                    >
+
+                        <div class="favorito-foto">
+
+                            {% if favorito.pet.foto %}
+
+                                <img
+                                    src="{{ favorito.pet.foto.url }}"
+                                    alt="Foto de {{ favorito.pet.nome }}"
+                                >
+
+                            {% else %}
+
+                                {% if favorito.pet.especie == 'cao' %}
+                                    <span style="font-size: 55px;">🐶</span>
+                                {% else %}
+                                    <span style="font-size: 55px;">🐱</span>
+                                {% endif %}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="favorito-info">
+
+                            <h3>
+                                {{ favorito.pet.nome }}
+                            </h3>
+
+                            <p>
+                                <i class="fa-solid fa-location-dot"></i>
+                                {{ favorito.pet.distancia }} km
+                            </p>
+
+
+                            <div class="favorito-status">
+
+                                {% if favorito.pet.vacinado %}
+                                    <span>✓ Vacinado</span>
+                                {% endif %}
+
+                                {% if favorito.pet.castrado %}
+                                    <span>✓ Castrado</span>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </section>
+
+        {% else %}
+
+            <div class="nenhum-favorito">
+
+                <i class="fa-regular fa-heart"></i>
+
+                <h2>Você ainda não tem favoritos</h2>
+
+                <p>
+                    Quando encontrar um pet que gostar,
+                    clique no coração para salvá-lo aqui.
+                </p>
+
+                <a
+                    href="{% url 'explorar' %}"
+                    class="btn-explorar"
+                >
+                    Explorar pets
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+</body>
+</html>
