@@ -1,0 +1,372 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ pet.nome }} - Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+<div class="perfil-container">
+
+    <!-- =========================
+         TOPO
+    ========================== -->
+
+    <header class="perfil-topo">
+
+        <a
+            href="{% url 'explorar' %}"
+            class="voltar"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+
+        <div>
+
+            <h1>Perfil do Pet</h1>
+
+            <span>EMISA</span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="perfil-favorito"
+            id="favoritoBtn"
+        >
+
+            <i class="fa-regular fa-heart"></i>
+
+        </button>
+
+    </header>
+
+
+    <!-- =========================
+         FOTO
+    ========================== -->
+
+    <div class="perfil-foto">
+
+        {% if pet.foto %}
+
+            <img
+                src="{{ pet.foto.url }}"
+                alt="Foto de {{ pet.nome }}"
+            >
+
+        {% else %}
+
+            {% if pet.especie == 'cao' %}
+
+                <span style="font-size: 100px;">🐶</span>
+
+            {% else %}
+
+                <span style="font-size: 100px;">🐱</span>
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         INFORMAÇÕES
+    ========================== -->
+
+    <section class="perfil-info">
+
+
+        <!-- NOME -->
+
+        <div class="nome-linha">
+
+            <div>
+
+                <h2>
+                    {{ pet.nome }}
+                </h2>
+
+                <p>
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    {{ pet.distancia }} km de você
+
+                </p>
+
+            </div>
+
+
+            {% if pet.disponivel %}
+
+                <span class="disponivel">
+                    Disponível
+                </span>
+
+            {% else %}
+
+                <span class="disponivel">
+                    Indisponível
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =========================
+             CARACTERÍSTICAS
+        ========================== -->
+
+        <div class="caracteristicas">
+
+
+            <!-- ESPÉCIE -->
+
+            <div class="caracteristica">
+
+                <i class="fa-solid fa-paw"></i>
+
+                <small>
+                    Espécie
+                </small>
+
+
+                {% if pet.especie == 'cao' %}
+
+                    <strong>
+                        Cão
+                    </strong>
+
+                {% else %}
+
+                    <strong>
+                        Gato
+                    </strong>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PORTE -->
+
+            <div class="caracteristica">
+
+                <i class="fa-solid fa-ruler"></i>
+
+                <small>
+                    Porte
+                </small>
+
+                <strong>
+                    {{ pet.get_porte_display }}
+                </strong>
+
+            </div>
+
+
+            <!-- IDADE -->
+
+            <div class="caracteristica">
+
+                <i class="fa-solid fa-cake-candles"></i>
+
+                <small>
+                    Idade
+                </small>
+
+                <strong>
+                    {{ pet.get_idade_display }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SAÚDE
+        ========================== -->
+
+        <h3 class="titulo-secao">
+            Saúde
+        </h3>
+
+
+        <div class="saude">
+
+            {% if pet.vacinado %}
+
+                <span>
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Vacinado
+
+                </span>
+
+            {% endif %}
+
+
+            {% if pet.castrado %}
+
+                <span>
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Castrado
+
+                </span>
+
+            {% endif %}
+
+
+            {% if not pet.vacinado and not pet.castrado %}
+
+                <span>
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
+                    Sem informações
+
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =========================
+             DESCRIÇÃO
+        ========================== -->
+
+        {% if pet.descricao %}
+
+            <h3 class="titulo-secao">
+                Sobre {{ pet.nome }}
+            </h3>
+
+            <p class="descricao">
+
+                {{ pet.descricao }}
+
+            </p>
+
+        {% endif %}
+
+
+        <!-- =========================
+             TEMPERAMENTO
+        ========================== -->
+
+        {% if pet.temperamento %}
+
+            <h3 class="titulo-secao">
+                Temperamento
+            </h3>
+
+
+            <div class="temperamento">
+
+                <i class="fa-solid fa-heart"></i>
+
+                <span>
+                    {{ pet.temperamento }}
+                </span>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             BOTÃO DE ADOÇÃO
+        ========================== -->
+
+        {% if pet.disponivel %}
+
+            <a
+                href="{% url 'solicitar_adocao' pet.id %}"
+                class="btn-adotar"
+            >
+
+                <i class="fa-solid fa-paw"></i>
+
+                Quero Adotar {{ pet.nome }}
+
+            </a>
+
+        {% else %}
+
+            <button
+                type="button"
+                class="btn-adotar"
+                disabled
+            >
+
+                <i class="fa-solid fa-heart"></i>
+
+                Pet indisponível
+
+            </button>
+
+        {% endif %}
+
+
+    </section>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<script>
+
+    const favorito = document.getElementById("favoritoBtn");
+
+    favorito.addEventListener("click", function () {
+
+        const icone = favorito.querySelector("i");
+
+        icone.classList.toggle("fa-regular");
+
+        icone.classList.toggle("fa-solid");
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

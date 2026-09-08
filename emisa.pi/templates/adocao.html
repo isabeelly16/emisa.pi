@@ -1,0 +1,282 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Adotar {{ pet.nome }} - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+<div class="adocao-container">
+
+    <!-- TOPO -->
+
+    <header class="adocao-topo">
+
+        <a href="{% url 'perfil_pet' pet.id %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+
+            <h1>Quero Adotar</h1>
+
+            <span>EMISA</span>
+
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <!-- PET -->
+
+    <section class="pet-escolhido">
+
+        {% if pet.foto %}
+
+            <img
+                src="{{ pet.foto.url }}"
+                alt="{{ pet.nome }}"
+            >
+
+        {% else %}
+
+            {% if pet.especie == 'cao' %}
+                🐶
+            {% else %}
+                🐱
+            {% endif %}
+
+        {% endif %}
+
+        <div>
+
+            <h2>{{ pet.nome }}</h2>
+
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ pet.distancia }} km de você
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FORMULÁRIO -->
+
+    <form method="POST" class="form-adocao">
+
+        {% csrf_token %}
+
+        <h2>Sobre você</h2>
+
+        <p class="subtitulo">
+            Preencha algumas informações para iniciar a solicitação.
+        </p>
+
+
+        <label>
+            Nome completo
+        </label>
+
+        <input
+            type="text"
+            name="nome_adotante"
+            placeholder="Digite seu nome"
+            required
+        >
+
+
+        <label>
+            E-mail
+        </label>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="seuemail@email.com"
+            required
+        >
+
+
+        <label>
+            Telefone
+        </label>
+
+        <input
+            type="tel"
+            name="telefone"
+            placeholder="(00) 00000-0000"
+            required
+        >
+
+
+        <label>
+            Você já teve animais?
+        </label>
+
+        <div class="opcoes-form">
+
+            <label>
+                <input
+                    type="radio"
+                    name="ja_teve_animais"
+                    value="sim"
+                    required
+                >
+                Sim
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="ja_teve_animais"
+                    value="nao"
+                >
+                Não
+            </label>
+
+        </div>
+
+
+        <label>
+            Onde o pet vai morar?
+        </label>
+
+        <input
+            type="text"
+            name="local_moradia"
+            placeholder="Ex.: casa, apartamento..."
+            required
+        >
+
+
+        <label>
+            O local possui espaço adequado para o pet?
+        </label>
+
+        <div class="opcoes-form">
+
+            <label>
+                <input
+                    type="radio"
+                    name="possui_espaco"
+                    value="sim"
+                    required
+                >
+                Sim
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="possui_espaco"
+                    value="nao"
+                >
+                Não
+            </label>
+
+        </div>
+
+
+        <label>
+            Todas as pessoas da residência concordam com a adoção?
+        </label>
+
+        <div class="opcoes-form">
+
+            <label>
+                <input
+                    type="radio"
+                    name="todos_concordam"
+                    value="sim"
+                    required
+                >
+                Sim
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="todos_concordam"
+                    value="nao"
+                >
+                Não
+            </label>
+
+        </div>
+
+
+        <label>
+            Você consegue oferecer os cuidados necessários?
+        </label>
+
+        <div class="opcoes-form">
+
+            <label>
+                <input
+                    type="radio"
+                    name="consegue_cuidar"
+                    value="sim"
+                    required
+                >
+                Sim
+            </label>
+
+            <label>
+                <input
+                    type="radio"
+                    name="consegue_cuidar"
+                    value="nao"
+                >
+                Não
+            </label>
+
+        </div>
+
+
+        <label>
+            Por que você deseja adotar {{ pet.nome }}?
+        </label>
+
+        <textarea
+            name="motivo"
+            rows="5"
+            placeholder="Conte um pouco sobre o motivo da adoção..."
+            required
+        ></textarea>
+
+
+        <button type="submit" class="btn-enviar-adocao">
+
+            <i class="fa-solid fa-paw"></i>
+
+            Enviar solicitação
+
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>
