@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emisa - Login</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <div class="login-box">
+
+            <div class="logo-area">
+
+
+                <h1>Emisa</h1>
+
+                <p>CONECTANDO ANIMAIS A NOVOS LARES</p>
+
+            </div>
+
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensagem">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="campo">
+
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="E-mail"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+                    <input
+                        type="password"
+                        name="senha"
+                        placeholder="Senha"
+                        required
+                    >
+
+                </div>
+
+
+                <button type="submit" class="btn-entrar">
+                     Entrar
+                </button>
+
+            </form>
+
+
+            <a href="#" class="esqueci">
+                Esqueci minha senha
+            </a>
+
+
+            <p class="cadastro-texto">
+                Não tem uma conta?
+                <a href="{% url 'cadastro' %}">Cadastre-se aqui</a>
+            </p>
+
+        </div>
+
+
+
+    </main>
+
+</body>
+
+</html>

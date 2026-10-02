@@ -1,0 +1,186 @@
+{% load static %}
+
+<button
+    type="button"
+    class="menu-global-botao"
+    id="menuGlobalBotao"
+    aria-label="Abrir menu"
+>
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<aside
+    class="menu-global"
+    id="menuGlobal"
+>
+
+    <div class="menu-global-topo">
+
+        <div>
+            <h2>Emisa</h2>
+            <span>ADOÇÃO QUE TRANSFORMA</span>
+        </div>
+
+        <button
+            type="button"
+            id="menuGlobalFechar"
+            aria-label="Fechar menu"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+    <nav>
+
+        <a href="{% url 'explorar' %}">
+            <i class="fa-solid fa-house"></i>
+            Explorar
+        </a>
+
+        <a href="{% url 'favoritos' %}">
+            <i class="fa-solid fa-heart"></i>
+            Favoritos
+        </a>
+
+        <a href="{% url 'minhas_solicitacoes' %}?origem=explorar">
+            <i class="fa-solid fa-file-signature"></i>
+            Minhas Solicitações
+        </a>
+
+        <a href="{% url 'solicitacoes_recebidas' %}">
+            <i class="fa-solid fa-inbox"></i>
+            Solicitações Recebidas
+        </a>
+
+        <a href="{% url 'mensagens' %}">
+            <i class="fa-solid fa-comments"></i>
+            Mensagens
+        </a>
+
+        <a href="{% url 'meus_pets' %}">
+            <i class="fa-solid fa-paw"></i>
+            Meus Pets
+        </a>
+
+        <a href="{% url 'perfil_usuario' %}">
+            <i class="fa-solid fa-user"></i>
+            Meu Perfil
+        </a>
+
+        <a
+            href="{% url 'notificacoes' %}"
+            class="menu-global-notificacao"
+        >
+            <i class="fa-solid fa-bell"></i>
+            Notificações
+        </a>
+
+        <a
+            href="{% url 'logout' %}"
+            class="menu-global-sair"
+        >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Sair
+        </a>
+
+    </nav>
+
+</aside>
+
+<div
+    class="menu-global-fundo"
+    id="menuGlobalFundo"
+></div>
+
+<nav class="menu-inferior-global">
+
+    <a
+        href="{% url 'explorar' %}"
+        class="menu-global-item"
+    >
+        <i class="fa-solid fa-house"></i>
+        <span>Explorar</span>
+    </a>
+
+    <a
+        href="{% url 'favoritos' %}"
+        class="menu-global-item"
+    >
+        <i class="fa-regular fa-heart"></i>
+        <span>Favoritos</span>
+    </a>
+
+    <a
+        href="{% url 'minhas_solicitacoes' %}?origem=explorar"
+        class="menu-global-item"
+    >
+        <i class="fa-solid fa-file-signature"></i>
+        <span>Solicitações</span>
+    </a>
+
+    <a
+        href="{% url 'mensagens' %}"
+        class="menu-global-item"
+    >
+        <i class="fa-regular fa-comment"></i>
+        <span>Mensagens</span>
+    </a>
+
+    <a
+        href="{% url 'perfil_usuario' %}"
+        class="menu-global-item"
+    >
+        <i class="fa-regular fa-user"></i>
+        <span>Perfil</span>
+    </a>
+
+</nav>
+
+<script>
+    const menuGlobalBotao = document.getElementById("menuGlobalBotao");
+    const menuGlobal = document.getElementById("menuGlobal");
+    const menuGlobalFechar = document.getElementById("menuGlobalFechar");
+    const menuGlobalFundo = document.getElementById("menuGlobalFundo");
+
+    function abrirMenuGlobal() {
+        if (menuGlobal) {
+            menuGlobal.classList.add("aberto");
+        }
+
+        if (menuGlobalFundo) {
+            menuGlobalFundo.classList.add("aberto");
+        }
+    }
+
+    function fecharMenuGlobal() {
+        if (menuGlobal) {
+            menuGlobal.classList.remove("aberto");
+        }
+
+        if (menuGlobalFundo) {
+            menuGlobalFundo.classList.remove("aberto");
+        }
+    }
+
+    if (menuGlobalBotao) {
+        menuGlobalBotao.addEventListener(
+            "click",
+            abrirMenuGlobal
+        );
+    }
+
+    if (menuGlobalFechar) {
+        menuGlobalFechar.addEventListener(
+            "click",
+            fecharMenuGlobal
+        );
+    }
+
+    if (menuGlobalFundo) {
+        menuGlobalFundo.addEventListener(
+            "click",
+            fecharMenuGlobal
+        );
+    }
+</script>

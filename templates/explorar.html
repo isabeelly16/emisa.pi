@@ -1,0 +1,920 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Emisa - Explorar</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+{% include 'includes/navegacao.html' %}
+
+
+<div class="app-container">
+
+    <header class="topo">
+
+        <div
+            class="menu-icon"
+            style="visibility: hidden;"
+        >
+        </div>
+
+
+        <div class="logo-pequena">
+
+            <h1>Emisa</h1>
+
+            <span>
+                CONECTANDO ANIMAIS A NOVOS LARES
+            </span>
+
+        </div>
+
+
+        <a
+            href="{% url 'notificacoes' %}"
+            class="notificacao"
+            aria-label="Notificações"
+        >
+
+            <i class="fa-regular fa-bell"></i>
+
+            {% if quantidade_notificacoes > 0 %}
+
+                <small>
+                    {{ quantidade_notificacoes }}
+                </small>
+
+            {% endif %}
+
+        </a>
+
+    </header>
+
+    <div class="barra-pesquisa">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="pesquisa"
+            placeholder="Busque por nome, raça ou característica..."
+        >
+
+    </div>
+
+    <div class="distancia">
+
+        <div>
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <span>
+                Raio de distância
+            </span>
+
+        </div>
+
+
+        <div class="dropdown-distancia">
+
+            <button
+                type="button"
+                class="dropdown-distancia-botao"
+                id="botaoDistancia"
+            >
+
+                <span id="textoDistancia">
+                    Todas
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </button>
+
+
+            <div
+                class="dropdown-distancia-opcoes"
+                id="opcoesDistancia"
+            >
+
+                <button
+                    type="button"
+                    data-valor="1"
+                >
+                    Até 1 km
+                </button>
+
+
+                <button
+                    type="button"
+                    data-valor="5"
+                >
+                    Até 5 km
+                </button>
+
+
+                <button
+                    type="button"
+                    data-valor="10"
+                >
+                    Até 10 km
+                </button>
+
+
+                <button
+                    type="button"
+                    data-valor="20"
+                >
+                    Até 20 km
+                </button>
+
+
+                <button
+                    type="button"
+                    data-valor="50"
+                >
+                    Até 50 km
+                </button>
+
+
+                <button
+                    type="button"
+                    data-valor="100"
+                >
+                    Até 100 km
+                </button>
+
+
+                <button
+                    type="button"
+                    data-valor="999999"
+                    class="selecionado"
+                >
+                    Todas
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="filtro-grupo">
+
+        <label>
+            Espécie
+        </label>
+
+
+        <div class="opcoes">
+
+            <button
+                type="button"
+                class="filtro ativo"
+                data-filtro="especie"
+                data-valor="cao"
+            >
+
+                <i class="fa-solid fa-dog"></i>
+
+                Cães
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="especie"
+                data-valor="gato"
+            >
+
+                <i class="fa-solid fa-cat"></i>
+
+                Gatos
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="filtro-grupo">
+
+        <label>
+            Porte
+        </label>
+
+
+        <div class="opcoes tres">
+
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="porte"
+                data-valor="pequeno"
+            >
+
+                <i class="fa-solid fa-paw"></i>
+
+                Pequeno
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="porte"
+                data-valor="medio"
+            >
+
+                <i class="fa-solid fa-paw"></i>
+
+                Médio
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="porte"
+                data-valor="grande"
+            >
+
+                <i class="fa-solid fa-paw"></i>
+
+                Grande
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="filtro-grupo">
+
+        <label>
+            Idade
+        </label>
+
+
+        <div class="opcoes">
+
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="idade"
+                data-valor="filhote"
+            >
+
+                <i class="fa-solid fa-paw"></i>
+
+                Filhote
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filtro"
+                data-filtro="idade"
+                data-valor="adulto"
+            >
+
+                <i class="fa-solid fa-paw"></i>
+
+                Adulto
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="resultado-topo">
+
+        <span>
+
+            <i class="fa-solid fa-heart"></i>
+
+            <strong id="quantidade">
+                {{ pets|length }}
+            </strong>
+
+            pets encontrados
+
+        </span>
+
+
+        <button type="button">
+
+            Mais recentes
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+        </button>
+
+    </div>
+
+
+    <section
+        class="pets-grid"
+        id="pets"
+    >
+
+        {% for pet in pets %}
+
+        <a
+            href="{% url 'perfil_pet' pet.id %}"
+            class="pet-card"
+
+            data-nome="{{ pet.nome }}"
+            data-especie="{{ pet.especie }}"
+            data-porte="{{ pet.porte }}"
+            data-idade="{{ pet.idade }}"
+
+            data-distancia="{% if pet.distancia_calculada is not None %}{{ pet.distancia_calculada }}{% endif %}"
+        >
+
+
+
+            <div class="pet-foto">
+
+
+                {% if pet.foto %}
+
+                    <img
+                        src="{{ pet.foto.url }}"
+                        alt="Foto de {{ pet.nome }}"
+                    >
+
+                {% else %}
+
+                    {% if pet.especie == 'cao' %}
+
+                        <span style="font-size: 55px;">
+                            🐶
+                        </span>
+
+                    {% else %}
+
+                        <span style="font-size: 55px;">
+                            🐱
+                        </span>
+
+                    {% endif %}
+
+                {% endif %}
+
+
+
+                <form
+                    method="POST"
+                    action="{% url 'favoritar_pet' pet.id %}"
+                    class="favorito-form"
+                >
+
+                    {% csrf_token %}
+
+
+                    <button
+                        type="submit"
+                        class="favorito"
+                        aria-label="Favoritar {{ pet.nome }}"
+                    >
+
+                        {% if pet.id in favoritos_ids %}
+
+                            <i class="fa-solid fa-heart"></i>
+
+                        {% else %}
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="pet-info">
+
+                <h3>
+                    {{ pet.nome }}
+                </h3>
+
+
+                <p>
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+
+                    {% if pet.distancia_calculada is not None %}
+
+                        {{ pet.distancia_calculada }} km
+
+                    {% else %}
+
+                        Distância indisponível
+
+                    {% endif %}
+
+                </p>
+
+
+                <div class="pet-status">
+
+                    {% if pet.vacinado %}
+
+                        <span>
+                            ✓ Vacinado
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if pet.castrado %}
+
+                        <span>
+                            ✓ Castrado
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </a>
+
+
+        {% empty %}
+
+            <p>
+                Nenhum pet disponível no momento.
+            </p>
+
+        {% endfor %}
+
+    </section>
+
+
+</div>
+
+<script>
+
+const pesquisa =
+    document.getElementById("pesquisa");
+
+const pets =
+    document.querySelectorAll(".pet-card");
+
+const quantidade =
+    document.getElementById("quantidade");
+
+
+const botaoDistancia =
+    document.getElementById("botaoDistancia");
+
+const opcoesDistancia =
+    document.getElementById("opcoesDistancia");
+
+const dropdownDistancia =
+    document.querySelector(".dropdown-distancia");
+
+const textoDistancia =
+    document.getElementById("textoDistancia");
+
+
+let filtros = {
+
+    especie: null,
+
+    porte: null,
+
+    idade: null,
+
+    distancia: 999999
+
+};
+
+
+pesquisa.addEventListener(
+    "input",
+    filtrarPets
+);
+
+
+botaoDistancia.addEventListener(
+    "click",
+    (event) => {
+
+        event.stopPropagation();
+
+        dropdownDistancia.classList.toggle(
+            "aberto"
+        );
+
+    }
+);
+
+
+document
+    .querySelectorAll(
+        "#opcoesDistancia button"
+    )
+    .forEach(opcao => {
+
+        opcao.addEventListener(
+            "click",
+            () => {
+
+                const valor =
+                    Number(
+                        opcao.dataset.valor
+                    );
+
+
+                filtros.distancia =
+                    valor;
+
+
+                textoDistancia.textContent =
+                    opcao.textContent.trim();
+
+
+                document
+                    .querySelectorAll(
+                        "#opcoesDistancia button"
+                    )
+                    .forEach(
+                        botao => {
+
+                            botao.classList.remove(
+                                "selecionado"
+                            );
+
+                        }
+                    );
+
+
+                opcao.classList.add(
+                    "selecionado"
+                );
+
+
+                dropdownDistancia.classList.remove(
+                    "aberto"
+                );
+
+
+                filtrarPets();
+
+            }
+        );
+
+    });
+
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if (
+            !dropdownDistancia.contains(
+                event.target
+            )
+        ) {
+
+            dropdownDistancia.classList.remove(
+                "aberto"
+            );
+
+        }
+
+    }
+);
+
+
+
+document
+    .querySelectorAll(".filtro")
+    .forEach(botao => {
+
+        botao.addEventListener(
+            "click",
+            () => {
+
+                const tipo =
+                    botao.dataset.filtro;
+
+                const valor =
+                    botao.dataset.valor;
+
+
+                if (
+                    filtros[tipo] === valor
+                ) {
+
+                    filtros[tipo] = null;
+
+                    botao.classList.remove(
+                        "ativo"
+                    );
+
+                } else {
+
+
+                    document
+                        .querySelectorAll(
+                            `[data-filtro="${tipo}"]`
+                        )
+                        .forEach(
+                            outroBotao => {
+
+                                outroBotao.classList.remove(
+                                    "ativo"
+                                );
+
+                            }
+                        );
+
+
+                    filtros[tipo] =
+                        valor;
+
+
+                    botao.classList.add(
+                        "ativo"
+                    );
+
+                }
+
+
+                filtrarPets();
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   FILTRAR PETS
+========================================================= */
+
+function filtrarPets() {
+
+    const texto =
+        pesquisa.value
+            .toLowerCase()
+            .trim();
+
+
+    let encontrados = 0;
+
+
+    pets.forEach(
+        pet => {
+
+            const nome =
+                pet.dataset.nome
+                    .toLowerCase();
+
+
+            const combinaPesquisa =
+                nome.includes(texto);
+
+
+            const combinaEspecie =
+                !filtros.especie ||
+                pet.dataset.especie ===
+                    filtros.especie;
+
+
+            const combinaPorte =
+                !filtros.porte ||
+                pet.dataset.porte ===
+                    filtros.porte;
+
+
+            const combinaIdade =
+                !filtros.idade ||
+                pet.dataset.idade ===
+                    filtros.idade;
+
+
+            const distanciaTexto =
+                pet.dataset.distancia;
+
+
+            let combinaDistancia;
+
+
+            /*
+             * Pets antigos ainda podem não
+             * possuir coordenadas.
+             *
+             * Quando "Todas" está selecionado,
+             * eles continuam aparecendo.
+             *
+             * Quando uma distância específica
+             * é escolhida, só entram pets com
+             * distância calculada.
+             */
+
+            if (!distanciaTexto) {
+
+                combinaDistancia =
+                    filtros.distancia >= 999999;
+
+            } else {
+
+                const distanciaPet =
+                    parseFloat(
+                        distanciaTexto.replace(
+                            ",",
+                            "."
+                        )
+                    );
+
+
+                combinaDistancia =
+                    !isNaN(distanciaPet) &&
+                    distanciaPet <=
+                        filtros.distancia;
+
+            }
+
+
+            if (
+
+                combinaPesquisa &&
+
+                combinaEspecie &&
+
+                combinaPorte &&
+
+                combinaIdade &&
+
+                combinaDistancia
+
+            ) {
+
+                pet.style.display =
+                    "block";
+
+                encontrados++;
+
+            } else {
+
+                pet.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    quantidade.textContent =
+        encontrados;
+
+}
+
+
+filtrarPets();
+
+</script>
+
+
+<script>
+
+function atualizarNotificacoes() {
+
+    fetch(
+        "{% url 'notificacoes_contador' %}"
+    )
+
+    .then(
+        response =>
+            response.json()
+    )
+
+    .then(
+        data => {
+
+            const sino =
+                document.querySelector(
+                    ".notificacao"
+                );
+
+
+            if (!sino) {
+
+                return;
+
+            }
+
+
+            let contador =
+                sino.querySelector(
+                    "small"
+                );
+
+
+            if (
+                data.quantidade > 0
+            ) {
+
+
+                if (!contador) {
+
+                    contador =
+                        document.createElement(
+                            "small"
+                        );
+
+                    sino.appendChild(
+                        contador
+                    );
+
+                }
+
+
+                contador.textContent =
+                    data.quantidade;
+
+
+            } else {
+
+
+                if (contador) {
+
+                    contador.remove();
+
+                }
+
+            }
+
+        }
+    )
+
+    .catch(
+        error => {
+
+            console.log(
+                "Erro ao atualizar notificações:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+atualizarNotificacoes();
+
+
+setInterval(
+    atualizarNotificacoes,
+    5000
+);
+
+</script>
+
+
+</body>
+</html>

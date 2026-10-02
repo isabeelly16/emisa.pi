@@ -1,0 +1,757 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meu Perfil - Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+{% include 'includes/navegacao.html' %}
+
+
+<div class="perfil-usuario-container">
+
+
+
+    <header class="perfil-usuario-topo">
+
+        <a
+            href="{% url 'explorar' %}"
+            class="voltar"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+
+        <div>
+
+            <h1>Meu Perfil</h1>
+
+            <span>EMISA</span>
+
+        </div>
+
+
+        <div></div>
+
+    </header>
+
+
+    <main class="perfil-usuario-conteudo">
+
+
+
+        <section class="usuario-card">
+
+            <div class="usuario-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <h2>
+                {{ usuario.first_name }}
+            </h2>
+
+
+            <p>
+
+                <i class="fa-solid fa-envelope"></i>
+
+                {{ usuario.email }}
+
+            </p>
+
+        </section>
+
+
+
+        {% if perfil.cidade and perfil.estado and not editar_endereco %}
+
+            <section class="endereco-salvo-card">
+
+
+                <div class="endereco-salvo-icone">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                </div>
+
+
+                <div class="endereco-salvo-info">
+
+                    <h2>
+                        Meu endereço
+                    </h2>
+
+
+                    <p>
+
+                        {% if perfil.zona_rural %}
+
+                            Zona Rural
+
+                            {% if perfil.complemento %}
+                                - {{ perfil.complemento }}
+                            {% endif %}
+
+                        {% else %}
+
+                            {% if perfil.rua %}
+
+                                {{ perfil.rua }}
+
+                                {% if perfil.numero %}
+                                    , {{ perfil.numero }}
+                                {% endif %}
+
+                            {% endif %}
+
+                            {% if perfil.bairro %}
+                                - {{ perfil.bairro }}
+                            {% endif %}
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <p>
+
+                        {{ perfil.cidade }}
+
+                        {% if perfil.estado %}
+                            - {{ perfil.estado }}
+                        {% endif %}
+
+                    </p>
+
+
+                    {% if perfil.cep %}
+
+                        <small>
+                            CEP: {{ perfil.cep }}
+                        </small>
+
+                    {% endif %}
+
+
+                    {% if perfil.latitude is not None and perfil.longitude is not None %}
+
+                        <span class="localizacao-ok">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Localização encontrada
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <a
+                    href="{% url 'perfil_usuario' %}?editar=1"
+                    class="btn-editar-endereco"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                    Editar
+
+                </a>
+
+
+            </section>
+
+
+        {% else %}
+
+
+
+            <section class="endereco-card">
+
+
+                <div class="endereco-titulo">
+
+                    <div class="endereco-icone">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Meu endereço
+                        </h2>
+
+                        <p>
+                            Informe seu endereço para calcular a distância dos pets.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    autocomplete="off"
+                >
+
+                    {% csrf_token %}
+
+
+
+                    <label for="cep">
+                        CEP
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="cep"
+                        name="cep"
+                        value="{{ perfil.cep }}"
+                        placeholder="00000-000"
+                        maxlength="9"
+                        autocomplete="postal-code"
+                    >
+
+
+                    <small
+                        id="statusCep"
+                        class="status-cep"
+                    ></small>
+
+
+
+                    <label class="checkbox-zona-rural">
+
+                        <input
+                            type="checkbox"
+                            id="zona_rural"
+                            name="zona_rural"
+                            {% if perfil.zona_rural %}checked{% endif %}
+                        >
+
+                        <span>
+                            Moro em zona rural
+                        </span>
+
+                    </label>
+
+
+
+                    <div class="endereco-duplo">
+
+
+                        <div>
+
+                            <label for="estado">
+                                Estado
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="estado"
+                                name="estado"
+                                value="{{ perfil.estado }}"
+                                placeholder="MG"
+                                maxlength="2"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label for="cidade">
+                                Cidade
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="cidade"
+                                name="cidade"
+                                value="{{ perfil.cidade }}"
+                                placeholder="Sua cidade"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <label for="bairro">
+                        Bairro ou localidade
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="bairro"
+                        name="bairro"
+                        value="{{ perfil.bairro }}"
+                        placeholder="Seu bairro ou localidade"
+                    >
+
+
+
+                    <label for="rua">
+                        Rua ou estrada
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="rua"
+                        name="rua"
+                        value="{{ perfil.rua }}"
+                        placeholder="Nome da rua ou estrada"
+                    >
+
+
+
+                    <div class="endereco-duplo">
+
+
+                        <div>
+
+                            <label for="numero">
+                                Número
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="numero"
+                                name="numero"
+                                value="{{ perfil.numero }}"
+                                placeholder="123"
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label for="complemento">
+                                Complemento / referência
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="complemento"
+                                name="complemento"
+                                value="{{ perfil.complemento }}"
+                                placeholder="Sítio, chácara, referência..."
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="btn-salvar-endereco"
+                    >
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        Salvar meu endereço
+
+                    </button>
+
+
+                </form>
+
+            </section>
+
+        {% endif %}
+
+
+
+        <section class="perfil-opcoes">
+
+
+
+            <a
+                href="{% url 'meus_pets' %}"
+                class="perfil-opcao"
+            >
+
+                <div class="perfil-opcao-icone">
+
+                    <i class="fa-solid fa-paw"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Meus Pets
+                    </strong>
+
+                    <span>
+                        Cadastre e gerencie seus pets para adoção
+                    </span>
+
+                </div>
+
+
+                <i class="fa-solid fa-chevron-right seta"></i>
+
+            </a>
+
+
+
+            <a
+                href="{% url 'minhas_solicitacoes' %}?origem=perfil"
+                class="perfil-opcao"
+            >
+
+                <div class="perfil-opcao-icone">
+
+                    <i class="fa-solid fa-file-signature"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Minhas Solicitações
+                    </strong>
+
+                    <span>
+                        Acompanhe suas solicitações de adoção
+                    </span>
+
+                </div>
+
+
+                <i class="fa-solid fa-chevron-right seta"></i>
+
+            </a>
+
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="perfil-opcao sair-opcao"
+            >
+
+                <div class="perfil-opcao-icone">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Sair da conta
+                    </strong>
+
+                    <span>
+                        Encerrar sua sessão
+                    </span>
+
+                </div>
+
+
+                <i class="fa-solid fa-chevron-right seta"></i>
+
+            </a>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+const campoCep =
+    document.getElementById("cep");
+
+const campoRua =
+    document.getElementById("rua");
+
+const campoBairro =
+    document.getElementById("bairro");
+
+const campoCidade =
+    document.getElementById("cidade");
+
+const campoEstado =
+    document.getElementById("estado");
+
+const statusCep =
+    document.getElementById("statusCep");
+
+
+/* Só executa se o formulário de endereço estiver na página */
+
+if (campoCep) {
+
+    let consultaEmAndamento = false;
+
+
+    /* =====================================================
+       FORMATAR CEP
+    ====================================================== */
+
+    function formatarCep(valor) {
+
+        valor = valor.replace(
+            /\D/g,
+            ""
+        );
+
+
+        if (valor.length > 5) {
+
+            valor =
+                valor.substring(0, 5)
+                + "-"
+                + valor.substring(5, 8);
+
+        }
+
+
+        return valor;
+
+    }
+
+
+    /* =====================================================
+       CONSULTAR CEP
+    ====================================================== */
+
+    function consultarCep() {
+
+        const cep =
+            campoCep.value.replace(
+                /\D/g,
+                ""
+            );
+
+
+        if (cep.length !== 8) {
+
+            statusCep.textContent = "";
+
+            return;
+
+        }
+
+
+        if (consultaEmAndamento) {
+            return;
+        }
+
+
+        consultaEmAndamento = true;
+
+
+        statusCep.textContent =
+            "Consultando CEP...";
+
+        statusCep.className =
+            "status-cep carregando";
+
+
+        fetch(
+            `https://viacep.com.br/ws/${cep}/json/`
+        )
+
+        .then(
+            response => {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Erro na consulta do CEP."
+                    );
+
+                }
+
+                return response.json();
+
+            }
+        )
+
+        .then(
+            dados => {
+
+                if (dados.erro) {
+
+                    statusCep.textContent =
+                        "CEP não encontrado.";
+
+                    statusCep.className =
+                        "status-cep erro";
+
+                    return;
+
+                }
+
+
+                campoRua.value =
+                    dados.logradouro || "";
+
+
+                campoBairro.value =
+                    dados.bairro || "";
+
+
+                campoCidade.value =
+                    dados.localidade || "";
+
+
+                campoEstado.value =
+                    dados.uf || "";
+
+
+                statusCep.textContent =
+                    "Endereço encontrado!";
+
+                statusCep.className =
+                    "status-cep sucesso";
+
+            }
+        )
+
+        .catch(
+            error => {
+
+                console.log(
+                    "Erro ao consultar CEP:",
+                    error
+                );
+
+
+                statusCep.textContent =
+                    "Não foi possível consultar o CEP.";
+
+                statusCep.className =
+                    "status-cep erro";
+
+            }
+        )
+
+        .finally(
+            () => {
+
+                consultaEmAndamento =
+                    false;
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       DIGITAR CEP
+    ====================================================== */
+
+    campoCep.addEventListener(
+        "input",
+        () => {
+
+            campoCep.value =
+                formatarCep(
+                    campoCep.value
+                );
+
+
+            const cep =
+                campoCep.value.replace(
+                    /\D/g,
+                    ""
+                );
+
+
+            if (cep.length === 8) {
+
+                consultarCep();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       SE O CEP JÁ ESTIVER PREENCHIDO
+    ====================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            const cep =
+                campoCep.value.replace(
+                    /\D/g,
+                    ""
+                );
+
+
+            if (cep.length === 8) {
+
+                consultarCep();
+
+            }
+
+        }
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

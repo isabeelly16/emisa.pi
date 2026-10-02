@@ -1,0 +1,585 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Solicitações | Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #fff7fa;
+        }
+
+        .sr-wrap {
+            min-height: 100vh;
+            padding: 35px 20px 120px;
+        }
+
+        .sr-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .sr-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .sr-back {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #d92f72;
+            text-decoration: none;
+            box-shadow: 0 8px 22px rgba(217, 47, 114, 0.12);
+        }
+
+        .sr-title {
+            margin: 0;
+            color: #d92f72;
+            font: 700 36px Georgia, serif;
+        }
+
+        .sr-sub {
+            margin: 5px 0 0;
+            color: #ba6b8e;
+            font-size: 10px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .sr-count {
+            margin-left: auto;
+            padding: 10px 15px;
+            border-radius: 30px;
+            background: #fdebf3;
+            color: #c35780;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .sr-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sr-card {
+            display: grid;
+            grid-template-columns:
+                230px
+                1fr
+                auto;
+            gap: 24px;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #f0dbe6;
+            border-radius: 26px;
+            padding: 22px;
+            box-shadow:
+                0 12px 30px rgba(92, 54, 76, 0.07);
+        }
+
+        .sr-pet {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sr-paw {
+            width: 52px;
+            height: 52px;
+            border-radius: 17px;
+            background: #fdebf3;
+            color: #d92f72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .sr-pet h2 {
+            margin: 0;
+            color: #46505d;
+            font-size: 22px;
+        }
+
+        .sr-pet span {
+            display: block;
+            margin-top: 4px;
+            color: #99919a;
+            font-size: 11px;
+        }
+
+        .sr-status {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .pending {
+            background: #fff4d9;
+            color: #9a701d;
+        }
+
+        .approved {
+            background: #e6f8ed;
+            color: #27834a;
+        }
+
+        .refused {
+            background: #fde9ec;
+            color: #b54b60;
+        }
+
+        .sr-info {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(130px, 1fr));
+            gap: 10px;
+        }
+
+        .sr-field {
+            padding: 13px 14px;
+            border: 1px solid #f0e2e9;
+            border-radius: 16px;
+            background: #fffafd;
+        }
+
+        .sr-field strong {
+            display: block;
+            color: #d92f72;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .sr-field span {
+            color: #59616c;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .sr-actions {
+            min-width: 190px;
+        }
+
+        .sr-actions form {
+            margin: 0 0 9px;
+        }
+
+        .sr-btn {
+            width: 100%;
+            min-height: 46px;
+            border: 0;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .approve {
+            background: #dff5e7;
+            color: #27834a;
+        }
+
+        .reject {
+            background: #fde9ec;
+            color: #b54b60;
+        }
+
+        .follow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            text-decoration: none;
+            background: #ead8ff;
+            color: #73459a;
+            padding: 14px;
+            box-sizing: border-box;
+        }
+
+        .sr-note {
+            padding: 14px;
+            border-radius: 14px;
+            background: #faf5f8;
+            color: #716973;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .sr-empty {
+            background: #ffffff;
+            border: 1px dashed #e4ccd8;
+            border-radius: 25px;
+            padding: 55px 20px;
+            text-align: center;
+        }
+
+        .sr-empty i {
+            font-size: 40px;
+            color: #d92f72;
+            margin-bottom: 15px;
+        }
+
+        .sr-empty h3 {
+            margin: 0 0 8px;
+            color: #59616c;
+        }
+
+        .sr-empty p {
+            margin: 0;
+            color: #99919a;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+
+            .sr-card {
+                grid-template-columns: 1fr;
+            }
+
+            .sr-actions {
+                width: 100%;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .sr-wrap {
+                padding: 22px 14px 120px;
+            }
+
+            .sr-title {
+                font-size: 29px;
+            }
+
+            .sr-count {
+                display: none;
+            }
+
+            .sr-info {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+{% include 'includes/navegacao.html' %}
+
+<div class="sr-wrap">
+
+    <div class="sr-container">
+
+        <header class="sr-top">
+
+            <a
+                href="{% url 'explorar' %}"
+                class="sr-back"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div>
+
+                <h1 class="sr-title">
+                    Solicitações
+                </h1>
+
+                <p class="sr-sub">
+                    ADOÇÃO
+                </p>
+
+            </div>
+
+            <span class="sr-count">
+                {{ quantidade_pendentes }}
+                pendente{{ quantidade_pendentes|pluralize }}
+            </span>
+
+        </header>
+
+        <div class="sr-list">
+
+            {% for solicitacao in solicitacoes %}
+
+                <article class="sr-card">
+
+                    <div class="sr-pet">
+
+                        <div class="sr-paw">
+                            <i class="fa-solid fa-paw"></i>
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                {{ solicitacao.pet.nome }}
+                            </h2>
+
+                            <span>
+                                Solicitação de adoção
+                            </span>
+
+                            {% if solicitacao.status == 'pendente' %}
+
+                                <span class="sr-status pending">
+                                    Pendente
+                                </span>
+
+                            {% elif solicitacao.status == 'aprovada' or solicitacao.status == 'aprovado' %}
+
+                                <span class="sr-status approved">
+                                    Aprovada
+                                </span>
+
+                            {% elif solicitacao.status == 'recusada' or solicitacao.status == 'rejeitado' %}
+
+                                <span class="sr-status refused">
+                                    Recusada
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="sr-info">
+
+                        <div class="sr-field">
+                            <strong>Adotante</strong>
+                            <span>
+                                {{ solicitacao.nome_adotante }}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>E-mail</strong>
+                            <span>
+                                {{ solicitacao.email }}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>Telefone</strong>
+                            <span>
+                                {{ solicitacao.telefone }}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>Moradia</strong>
+                            <span>
+                                {{ solicitacao.local_moradia }}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>Já teve animais?</strong>
+                            <span>
+                                {% if solicitacao.ja_teve_animais %}
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>Possui espaço?</strong>
+                            <span>
+                                {% if solicitacao.possui_espaco %}
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>Todos concordam?</strong>
+                            <span>
+                                {% if solicitacao.todos_concordam %}
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="sr-field">
+                            <strong>Consegue cuidar?</strong>
+                            <span>
+                                {% if solicitacao.consegue_cuidar %}
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div
+                            class="sr-field"
+                            style="grid-column: 1 / -1;"
+                        >
+                            <strong>
+                                Motivo da adoção
+                            </strong>
+
+                            <span>
+                                {{ solicitacao.motivo }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="sr-actions">
+
+                        {% if solicitacao.status == 'pendente' %}
+
+                            <form
+                                method="POST"
+                                action="{% url 'decidir_solicitacao' solicitacao.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="decisao"
+                                    value="aprovar"
+                                >
+
+                                <button
+                                    class="sr-btn approve"
+                                    type="submit"
+                                >
+                                    <i class="fa-solid fa-check"></i>
+                                    Aceitar adoção
+                                </button>
+
+                            </form>
+
+                            <form
+                                method="POST"
+                                action="{% url 'decidir_solicitacao' solicitacao.id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="decisao"
+                                    value="recusar"
+                                >
+
+                                <button
+                                    class="sr-btn reject"
+                                    type="submit"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                    Recusar
+                                </button>
+
+                            </form>
+
+                        {% elif solicitacao.status == 'aprovada' or solicitacao.status == 'aprovado' %}
+
+                            {% if solicitacao.acompanhamento_obj %}
+
+                                <a
+                                    class="sr-btn follow"
+                                    href="{% url 'acompanhamento_adocao' solicitacao.acompanhamento_obj.id %}"
+                                >
+                                    <i class="fa-solid fa-heart"></i>
+                                    Ir para pós-adoção
+                                </a>
+
+                            {% else %}
+
+                                <div class="sr-note">
+                                    Adoção aprovada.
+                                </div>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <div class="sr-note">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Solicitação recusada.
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <div class="sr-empty">
+
+                    <i class="fa-solid fa-inbox"></i>
+
+                    <h3>
+                        Nenhuma solicitação recebida
+                    </h3>
+
+                    <p>
+                        As solicitações para os seus
+                        pets aparecerão aqui.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Conversa - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .chat-area {
+            padding: 20px;
+            padding-bottom: 170px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .mensagem {
+            max-width: 78%;
+            padding: 12px 15px;
+            border-radius: 16px;
+            word-break: break-word;
+        }
+
+        .mensagem-eu {
+            align-self: flex-end;
+            background: #ead8ff;
+        }
+
+        .mensagem-outro {
+            align-self: flex-start;
+            background: #ffffff;
+        }
+
+        .horario {
+            display: block;
+            margin-top: 5px;
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        .chat-form {
+            position: fixed;
+            left: 15px;
+            right: 15px;
+            bottom: 85px;
+            display: flex;
+            gap: 10px;
+            z-index: 180;
+        }
+
+        .chat-form input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            outline: none;
+        }
+
+        .chat-form button {
+            width: 52px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'includes/navegacao.html' %}
+
+    <div class="app-container">
+
+        <header class="topo">
+
+            <a href="{% url 'mensagens' %}" class="voltar">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div class="logo-pequena">
+                <h1>
+                    {{ outro_usuario.first_name|default:outro_usuario.username }}
+                </h1>
+
+                <span>CONVERSA</span>
+            </div>
+
+        </header>
+
+        <main
+            id="chat"
+            class="chat-area"
+            data-meu-id="{{ request.user.id }}"
+            data-outro-id="{{ outro_usuario.id }}"
+        >
+
+            {% for mensagem in mensagens %}
+
+                {% if mensagem.remetente == request.user %}
+
+                    <div class="mensagem mensagem-eu">
+                        {{ mensagem.mensagem }}
+
+                        <small class="horario">
+                            {{ mensagem.data_envio|date:"d/m/Y H:i" }}
+                        </small>
+                    </div>
+
+                {% else %}
+
+                    <div class="mensagem mensagem-outro">
+                        {{ mensagem.mensagem }}
+
+                        <small class="horario">
+                            {{ mensagem.data_envio|date:"d/m/Y H:i" }}
+                        </small>
+                    </div>
+
+                {% endif %}
+
+            {% empty %}
+
+                <div style="text-align: center; opacity: 0.6; margin-top: 40px;">
+                    Nenhuma mensagem ainda.
+                </div>
+
+            {% endfor %}
+
+        </main>
+
+        <form id="formChat" class="chat-form">
+
+            <input
+                type="text"
+                id="mensagem"
+                placeholder="Digite uma mensagem..."
+                autocomplete="off"
+            >
+
+            <button type="submit">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+        </form>
+
+    </div>
+
+    <script>
+        const chat = document.getElementById("chat");
+        const formChat = document.getElementById("formChat");
+        const campoMensagem = document.getElementById("mensagem");
+
+        const meuId = chat.dataset.meuId;
+        const outroId = chat.dataset.outroId;
+
+        const protocolo = window.location.protocol === "https:" ? "wss" : "ws";
+
+        const socket = new WebSocket(
+            protocolo + "://" + window.location.host + "/ws/mensagens/" + outroId + "/"
+        );
+
+        socket.onmessage = function(event) {
+            const dados = JSON.parse(event.data);
+
+            if (dados.tipo !== "mensagem") {
+                return;
+            }
+
+            const mensagem = dados.mensagem;
+
+            const caixa = document.createElement("div");
+            caixa.classList.add("mensagem");
+
+            if (String(mensagem.remetente_id) === String(meuId)) {
+                caixa.classList.add("mensagem-eu");
+            } else {
+                caixa.classList.add("mensagem-outro");
+            }
+
+            const texto = document.createElement("div");
+            texto.textContent = mensagem.texto;
+
+            const horario = document.createElement("small");
+            horario.classList.add("horario");
+            horario.textContent = mensagem.data;
+
+            caixa.appendChild(texto);
+            caixa.appendChild(horario);
+
+            chat.appendChild(caixa);
+
+            chat.scrollTop = chat.scrollHeight;
+        };
+
+        formChat.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const texto = campoMensagem.value.trim();
+
+            if (texto === "") {
+                return;
+            }
+
+            if (socket.readyState !== WebSocket.OPEN) {
+                return;
+            }
+
+            socket.send(
+                JSON.stringify({
+                    mensagem: texto
+                })
+            );
+
+            campoMensagem.value = "";
+            campoMensagem.focus();
+        });
+
+        socket.onclose = function() {
+            console.log("Conexão encerrada.");
+        };
+
+        socket.onerror = function() {
+            console.log("Erro na conexão.");
+        };
+
+        chat.scrollTop = chat.scrollHeight;
+    </script>
+
+</body>
+</html>

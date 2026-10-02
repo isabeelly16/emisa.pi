@@ -1,0 +1,154 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Notificações - Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+{% include 'includes/navegacao.html' %}
+
+<div class="app-container">
+
+    <header class="topo">
+
+        <a
+            href="{% url 'explorar' %}"
+            class="voltar"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+        </a>
+
+        <div class="logo-pequena">
+
+            <h1>Notificações</h1>
+
+            <span>EMISA</span>
+
+        </div>
+
+    </header>
+
+    <main style="padding:25px 18px 120px;">
+
+        {% for notificacao in notificacoes_lista %}
+
+            <a
+                href="{{ notificacao.link|default:'#' }}"
+                style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    background:#ffffff;
+                    border-radius:20px;
+                    padding:20px;
+                    margin-bottom:15px;
+                    box-shadow:0 8px 25px rgba(0,0,0,.06);
+                "
+            >
+
+                <h3>
+                    {{ notificacao.titulo }}
+                </h3>
+
+                <p>
+                    {{ notificacao.mensagem }}
+                </p>
+
+                <small>
+                    {{ notificacao.data_criacao|date:"d/m/Y H:i" }}
+                </small>
+
+            </a>
+
+        {% endfor %}
+
+        {% for mensagem in mensagens_nao_lidas %}
+
+            <a
+                href="{% url 'conversa' mensagem.remetente.id %}"
+                style="
+                    display:block;
+                    text-decoration:none;
+                    color:inherit;
+                    background:#ffffff;
+                    border-radius:20px;
+                    padding:20px;
+                    margin-bottom:15px;
+                    box-shadow:0 8px 25px rgba(0,0,0,.06);
+                "
+            >
+
+                <h3>
+                    Nova mensagem
+                </h3>
+
+                <p>
+                    {{ mensagem.remetente.first_name|default:mensagem.remetente.username }}
+                    enviou uma nova mensagem.
+                </p>
+
+                <small>
+                    {{ mensagem.data_envio|date:"d/m/Y H:i" }}
+                </small>
+
+            </a>
+
+        {% endfor %}
+
+        {% if not notificacoes_lista and not mensagens_nao_lidas %}
+
+            <div
+                style="
+                    background:#ffffff;
+                    border-radius:20px;
+                    padding:30px;
+                    text-align:center;
+                "
+            >
+
+                <i class="fa-regular fa-bell"></i>
+
+                <h2>
+                    Tudo tranquilo!
+                </h2>
+
+                <p>
+                    Você não possui novas notificações.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

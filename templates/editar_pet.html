@@ -1,0 +1,293 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Editar Pet - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+    {% include 'includes/navegacao.html' %}
+
+<div class="editar-pet-container">
+
+    <header class="editar-pet-topo">
+
+        <a href="{% url 'meus_pets' %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <h1>Editar Pet</h1>
+            <span>EMISA</span>
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <main class="editar-pet-conteudo">
+
+        <div class="editar-pet-card">
+
+            <div class="editar-pet-titulo">
+
+                <h2>Editar informações</h2>
+
+                <p>
+                    Altere os dados de {{ pet.nome }}.
+                </p>
+
+            </div>
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                <label for="nome">
+                    Nome do pet
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    value="{{ pet.nome }}"
+                    required
+                >
+
+
+                <label for="especie">
+                    Espécie
+                </label>
+
+                <select
+                    id="especie"
+                    name="especie"
+                    required
+                >
+
+                    <option
+                        value="cao"
+                        {% if pet.especie == 'cao' %}selected{% endif %}
+                    >
+                        Cão
+                    </option>
+
+                    <option
+                        value="gato"
+                        {% if pet.especie == 'gato' %}selected{% endif %}
+                    >
+                        Gato
+                    </option>
+
+                </select>
+
+
+                <label for="porte">
+                    Porte
+                </label>
+
+                <select
+                    id="porte"
+                    name="porte"
+                    required
+                >
+
+                    <option
+                        value="pequeno"
+                        {% if pet.porte == 'pequeno' %}selected{% endif %}
+                    >
+                        Pequeno
+                    </option>
+
+                    <option
+                        value="medio"
+                        {% if pet.porte == 'medio' %}selected{% endif %}
+                    >
+                        Médio
+                    </option>
+
+                    <option
+                        value="grande"
+                        {% if pet.porte == 'grande' %}selected{% endif %}
+                    >
+                        Grande
+                    </option>
+
+                </select>
+
+
+                <label for="idade">
+                    Idade
+                </label>
+
+                <select
+                    id="idade"
+                    name="idade"
+                    required
+                >
+
+                    <option
+                        value="filhote"
+                        {% if pet.idade == 'filhote' %}selected{% endif %}
+                    >
+                        Filhote
+                    </option>
+
+                    <option
+                        value="adulto"
+                        {% if pet.idade == 'adulto' %}selected{% endif %}
+                    >
+                        Adulto
+                    </option>
+
+                </select>
+
+                <label>
+                    Saúde
+                </label>
+
+                <div class="checkbox-pet">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="vacinado"
+                            {% if pet.vacinado %}checked{% endif %}
+                        >
+
+                        Vacinado
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="castrado"
+                            {% if pet.castrado %}checked{% endif %}
+                        >
+
+                        Castrado
+
+                    </label>
+
+                </div>
+
+
+                <label for="temperamento">
+                    Temperamento
+                </label>
+
+                <input
+                    type="text"
+                    id="temperamento"
+                    name="temperamento"
+                    value="{{ pet.temperamento }}"
+                    placeholder="Ex.: dócil, brincalhão..."
+                >
+
+
+                <label for="descricao">
+                    Descrição
+                </label>
+
+                <textarea
+                    id="descricao"
+                    name="descricao"
+                    rows="6"
+                    placeholder="Conte um pouco sobre o pet..."
+                >{{ pet.descricao }}</textarea>
+
+
+                <label>
+                    Disponibilidade
+                </label>
+
+                <div class="checkbox-pet">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="disponivel"
+                            {% if pet.disponivel %}checked{% endif %}
+                        >
+
+                        Pet disponível para adoção
+
+                    </label>
+
+                </div>
+
+
+                <label for="foto">
+                    Nova foto
+                </label>
+
+                <input
+                    type="file"
+                    id="foto"
+                    name="foto"
+                    accept="image/*"
+                >
+
+
+                {% if pet.foto %}
+
+                    <div class="foto-atual">
+
+                        <p>Foto atual:</p>
+
+                        <img
+                            src="{{ pet.foto.url }}"
+                            alt="Foto de {{ pet.nome }}"
+                        >
+
+                    </div>
+
+                {% endif %}
+
+
+                <button
+                    type="submit"
+                    class="btn-salvar-pet"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    Salvar alterações
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

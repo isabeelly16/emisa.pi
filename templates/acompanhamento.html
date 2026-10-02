@@ -1,0 +1,749 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pós-adoção - {{ pet.nome }} | Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+        body {
+            margin: 0;
+            background: #fff7fa;
+            color: #46505d;
+        }
+
+        .pos-wrapper {
+            min-height: 100vh;
+            padding: 30px 20px 120px;
+        }
+
+        .pos-container {
+            max-width: 980px;
+            margin: auto;
+        }
+
+        .pos-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .pos-back {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #d92f72;
+            text-decoration: none;
+            box-shadow: 0 8px 22px rgba(217, 47, 114, 0.12);
+        }
+
+        .pos-title {
+            margin: 0;
+            color: #d92f72;
+            font: 700 36px Georgia, serif;
+        }
+
+        .pos-subtitle {
+            margin: 5px 0 0;
+            color: #ba6b8e;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .pos-hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            padding: 30px;
+            background: linear-gradient(
+                135deg,
+                #ffffff,
+                #fff8fb
+            );
+            border: 1px solid #f0dbe6;
+            border-radius: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 14px 35px rgba(92, 54, 76, 0.08);
+        }
+
+        .pos-hero h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .pos-hero p {
+            margin: 0;
+            color: #7b838e;
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 680px;
+        }
+
+        .pos-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .pos-pill {
+            padding: 9px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .active {
+            background: #e6f8ed;
+            color: #27834a;
+        }
+
+        .role {
+            background: #f7eaf1;
+            color: #c35780;
+        }
+
+        .pos-icon {
+            width: 105px;
+            height: 105px;
+            border-radius: 28px;
+            background: #fdebf3;
+            color: #d92f72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            flex-shrink: 0;
+        }
+
+        .pos-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1.15fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        .pos-card {
+            background: #ffffff;
+            border: 1px solid #f0dbe6;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 12px 30px rgba(92, 54, 76, 0.07);
+        }
+
+        .pos-header {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .pos-header-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: #fdebf3;
+            color: #d92f72;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pos-header h3 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+        .pos-header span {
+            display: block;
+            margin-top: 3px;
+            color: #96909a;
+            font-size: 11px;
+        }
+
+        .pos-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .pos-textarea {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 160px;
+            padding: 16px;
+            border: 1px solid #ead9e2;
+            border-radius: 18px;
+            background: #fffafd;
+            color: #4e5661;
+            font: 14px inherit;
+            resize: vertical;
+            outline: none;
+        }
+
+        .pos-textarea:focus {
+            border-color: #d92f72;
+            box-shadow:
+                0 0 0 4px rgba(217, 47, 114, 0.07);
+        }
+
+        .pos-upload {
+            padding: 16px;
+            border: 1px dashed #dfc4d2;
+            border-radius: 18px;
+            background: #fffafd;
+        }
+
+        .pos-upload label {
+            display: block;
+            margin-bottom: 9px;
+            color: #d92f72;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .pos-upload input {
+            width: 100%;
+            font-size: 12px;
+        }
+
+        .pos-submit {
+            width: 100%;
+            min-height: 50px;
+            border: 0;
+            border-radius: 16px;
+            background: #d92f72;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pos-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            min-height: 50px;
+            box-sizing: border-box;
+            border-radius: 16px;
+            background: #f2e6ff;
+            color: #70429a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 18px;
+        }
+
+        .pos-help {
+            margin: 0;
+            color: #99919a;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .observer-box {
+            padding: 24px;
+            border-radius: 20px;
+            background: linear-gradient(
+                135deg,
+                #fff7fb,
+                #fdf1f6
+            );
+            border: 1px solid #f1dce6;
+            text-align: center;
+        }
+
+        .observer-box i {
+            font-size: 35px;
+            color: #d92f72;
+            margin-bottom: 12px;
+        }
+
+        .observer-box h4 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .observer-box p {
+            margin: 0;
+            color: #77727a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .pos-history {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .pos-update {
+            background: #fffafd;
+            border: 1px solid #f0e0e8;
+            border-radius: 19px;
+            padding: 18px;
+        }
+
+        .pos-update-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .pos-tag {
+            padding: 6px 10px;
+            border-radius: 30px;
+            background: #f9eaf1;
+            color: #c85b83;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .pos-date {
+            color: #9c929a;
+            font-size: 10px;
+        }
+
+        .pos-text {
+            margin: 0;
+            color: #515a65;
+            font-size: 14px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+        }
+
+        .pos-photo {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            border-radius: 16px;
+            display: block;
+            margin-top: 14px;
+        }
+
+        .pos-empty {
+            padding: 38px 18px;
+            border: 1px dashed #e4ccd8;
+            border-radius: 19px;
+            background: #fffafd;
+            text-align: center;
+        }
+
+        .pos-empty i {
+            display: block;
+            color: #d92f72;
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .pos-empty h4 {
+            margin: 0 0 7px;
+            font-size: 16px;
+        }
+
+        .pos-empty p {
+            margin: 0;
+            color: #989099;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .pos-footer {
+            margin-top: 22px;
+            padding: 17px 18px;
+            border-radius: 17px;
+            background: #f9edf3;
+            color: #745e69;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        @media (max-width: 850px) {
+            .pos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .pos-wrapper {
+                padding: 22px 14px 120px;
+            }
+
+            .pos-title {
+                font-size: 29px;
+            }
+
+            .pos-hero {
+                padding: 22px;
+                align-items: flex-start;
+            }
+
+            .pos-icon {
+                width: 72px;
+                height: 72px;
+                font-size: 30px;
+                border-radius: 20px;
+            }
+
+            .pos-hero h2 {
+                font-size: 23px;
+            }
+
+            .pos-card {
+                padding: 20px;
+            }
+
+            .pos-update-top {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'includes/navegacao.html' %}
+
+<div class="pos-wrapper">
+
+    <div class="pos-container">
+
+        <header class="pos-top">
+
+            <a
+                href="{% url voltar_url %}"
+                class="pos-back"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div>
+                <h1 class="pos-title">
+                    Pós-adoção
+                </h1>
+
+                <p class="pos-subtitle">
+                    ACOMPANHAMENTO
+                </p>
+            </div>
+
+        </header>
+
+        <section class="pos-hero">
+
+            <div>
+
+                <h2>
+                    {{ pet.nome }}
+                </h2>
+
+                {% if eh_adotante %}
+
+                    <p>
+                        Conte como está sendo a adaptação de
+                        {{ pet.nome }}. Suas mensagens e fotos
+                        serão compartilhadas com a pessoa que
+                        cuidava do pet antes da adoção.
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        Acompanhe como está sendo a adaptação
+                        de {{ pet.nome }} por meio das
+                        atualizações enviadas pela pessoa
+                        que realizou a adoção.
+                    </p>
+
+                {% endif %}
+
+                <div class="pos-meta">
+
+                    <span class="pos-pill active">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Acompanhamento ativo
+                    </span>
+
+                    {% if eh_adotante %}
+
+                        <span class="pos-pill role">
+                            <i class="fa-solid fa-heart"></i>
+                            Você é o adotante
+                        </span>
+
+                    {% else %}
+
+                        <span class="pos-pill role">
+                            <i class="fa-solid fa-paw"></i>
+                            Você era responsável pelo pet
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="pos-icon">
+                <i class="fa-solid fa-paw"></i>
+            </div>
+
+        </section>
+
+        <div class="pos-grid">
+
+            {% if eh_adotante %}
+
+                <section class="pos-card">
+
+                    <div class="pos-header">
+
+                        <div class="pos-header-icon">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Enviar atualização
+                            </h3>
+
+                            <span>
+                                Conte como {{ pet.nome }} está
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <form
+                        method="POST"
+                        action="{% url 'enviar_atualizacao' acompanhamento.id %}"
+                        enctype="multipart/form-data"
+                        class="pos-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <textarea
+                            class="pos-textarea"
+                            name="texto"
+                            placeholder="Conte como está a adaptação de {{ pet.nome }}..."
+                        ></textarea>
+
+                        <div class="pos-upload">
+
+                            <label for="foto">
+                                <i class="fa-solid fa-image"></i>
+                                Adicionar uma foto
+                            </label>
+
+                            <input
+                                id="foto"
+                                type="file"
+                                name="foto"
+                                accept="image/*"
+                            >
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="pos-submit"
+                        >
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Enviar atualização
+                        </button>
+
+                        <p class="pos-help">
+                            Você pode enviar uma mensagem,
+                            uma foto ou os dois juntos.
+                        </p>
+
+                    </form>
+
+                </section>
+
+            {% else %}
+
+                <section class="pos-card">
+
+                    <div class="pos-header">
+
+                        <div class="pos-header-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Como {{ pet.nome }} está?
+                            </h3>
+
+                            <span>
+                                Acompanhe a adaptação do pet
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="observer-box">
+
+                        <i class="fa-solid fa-paw"></i>
+
+                        <h4>
+                            Quer saber como ele está?
+                        </h4>
+
+                        <p>
+                            A pessoa que adotou
+                            {{ pet.nome }}
+                            poderá enviar mensagens e fotos
+                            contando como está sendo a adaptação.
+                            As atualizações aparecerão aqui.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="{% url 'conversa' solicitacao.usuario.id %}"
+                        class="pos-message"
+                    >
+                        <i class="fa-solid fa-comments"></i>
+                        Enviar mensagem ao adotante
+                    </a>
+
+                </section>
+
+            {% endif %}
+
+            <section class="pos-card">
+
+                <div class="pos-header">
+
+                    <div class="pos-header-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Histórico
+                        </h3>
+
+                        <span>
+                            Atualizações de {{ pet.nome }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="pos-history">
+
+                    {% for atualizacao in atualizacoes %}
+
+                        <article class="pos-update">
+
+                            <div class="pos-update-top">
+
+                                <span class="pos-tag">
+                                    <i class="fa-solid fa-heart"></i>
+                                    Atualização do adotante
+                                </span>
+
+                                <span class="pos-date">
+                                    {{ atualizacao.data_envio|date:"d/m/Y H:i" }}
+                                </span>
+
+                            </div>
+
+                            {% if atualizacao.texto %}
+
+                                <p class="pos-text">
+                                    {{ atualizacao.texto }}
+                                </p>
+
+                            {% endif %}
+
+                            {% if atualizacao.foto %}
+
+                                <img
+                                    class="pos-photo"
+                                    src="{{ atualizacao.foto.url }}"
+                                    alt="Atualização de {{ pet.nome }}"
+                                >
+
+                            {% endif %}
+
+                        </article>
+
+                    {% empty %}
+
+                        <div class="pos-empty">
+
+                            <i class="fa-solid fa-heart"></i>
+
+                            <h4>
+                                Ainda não há atualizações
+                            </h4>
+
+                            <p>
+                                Quando a pessoa que adotou
+                                enviar uma mensagem ou foto,
+                                ela aparecerá aqui.
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <div class="pos-footer">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            As atualizações ficam disponíveis para a
+            pessoa que adotou e para a pessoa que era
+            responsável pelo pet.
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

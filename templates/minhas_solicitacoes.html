@@ -1,0 +1,543 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Minhas Solicitações - Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        .solicitacoes-container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 30px 20px 130px;
+        }
+
+        .solicitacoes-topo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .solicitacoes-topo .voltar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background: #ffffff;
+            color: #d92f72;
+            box-shadow: 0 6px 18px rgba(217, 47, 114, 0.12);
+            flex-shrink: 0;
+        }
+
+        .solicitacoes-topo h1 {
+            margin: 0;
+            color: #d92f72;
+            font-family: Georgia, serif;
+            font-size: 32px;
+            line-height: 1.1;
+        }
+
+        .solicitacoes-topo span {
+            display: block;
+            margin-top: 5px;
+            color: #d92f72;
+            font-size: 10px;
+            letter-spacing: 3px;
+        }
+
+        .solicitacoes-conteudo {
+            width: 100%;
+        }
+
+        .solicitacoes-titulo {
+            margin-bottom: 22px;
+        }
+
+        .solicitacoes-titulo h2 {
+            margin: 0 0 6px;
+            color: #46505d;
+            font-size: 24px;
+        }
+
+        .solicitacoes-titulo p {
+            margin: 0;
+            color: #858c96;
+            font-size: 14px;
+        }
+
+        .lista-solicitacoes {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .solicitacao-card {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 22px;
+            background: #ffffff;
+            border: 1px solid #f1e1ea;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 12px 30px rgba(92, 54, 76, 0.08);
+        }
+
+        .solicitacao-pet {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fdebf3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solicitacao-pet img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pet-icone {
+            font-size: 58px;
+        }
+
+        .solicitacao-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .solicitacao-info h3 {
+            margin: 0 0 7px;
+            color: #46505d;
+            font-size: 25px;
+        }
+
+        .solicitacao-data {
+            margin: 0;
+            color: #858c96;
+            font-size: 13px;
+        }
+
+        .solicitacao-data i {
+            color: #d92f72;
+            margin-right: 5px;
+        }
+
+        .solicitacao-status {
+            margin-top: 15px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status.pendente {
+            background: #fff3da;
+            color: #a76b00;
+        }
+
+        .status.aprovada {
+            background: #e4f7ea;
+            color: #25834a;
+        }
+
+        .status.recusada {
+            background: #fde7eb;
+            color: #c23850;
+        }
+
+        .solicitacao-acoes {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .ver-pet,
+        .acompanhar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 10px 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .ver-pet {
+            background: #f8edf3;
+            color: #c13a69;
+        }
+
+        .acompanhar {
+            background: #d92f72;
+            color: #ffffff;
+        }
+
+        .ver-pet:hover,
+        .acompanhar:hover {
+            transform: translateY(-1px);
+        }
+
+        .mensagem-status {
+            margin-top: 18px;
+            padding: 13px 15px;
+            border-radius: 14px;
+            background: #faf7f9;
+            color: #636b76;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .mensagem-status i {
+            margin-right: 5px;
+        }
+
+        .nenhuma-solicitacao {
+            background: #ffffff;
+            border: 1px solid #f1e1ea;
+            border-radius: 24px;
+            padding: 60px 25px;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(92, 54, 76, 0.07);
+        }
+
+        .nenhuma-solicitacao > i {
+            color: #d92f72;
+            font-size: 55px;
+            margin-bottom: 18px;
+        }
+
+        .nenhuma-solicitacao h2 {
+            margin: 0 0 10px;
+            color: #46505d;
+        }
+
+        .nenhuma-solicitacao p {
+            max-width: 480px;
+            margin: 0 auto;
+            color: #858c96;
+            line-height: 1.5;
+        }
+
+        .btn-explorar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 22px;
+            min-height: 46px;
+            padding: 0 20px;
+            border-radius: 14px;
+            background: #d92f72;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 700px) {
+
+            .solicitacoes-container {
+                padding: 25px 15px 120px;
+            }
+
+            .solicitacoes-topo h1 {
+                font-size: 27px;
+            }
+
+            .solicitacao-card {
+                grid-template-columns: 1fr;
+            }
+
+            .solicitacao-pet {
+                width: 100%;
+                height: 220px;
+            }
+
+            .solicitacao-info h3 {
+                font-size: 22px;
+            }
+
+            .solicitacao-acoes {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .ver-pet,
+            .acompanhar {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+{% include 'includes/navegacao.html' %}
+
+<div class="app-container">
+
+    <main class="solicitacoes-container">
+
+        <header class="solicitacoes-topo">
+
+            <a
+                href="{% url voltar_url %}"
+                class="voltar"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div>
+
+                <h1>Minhas Solicitações</h1>
+
+                <span>EMISA</span>
+
+            </div>
+
+        </header>
+
+        <section class="solicitacoes-conteudo">
+
+            <div class="solicitacoes-titulo">
+
+                <h2>Minhas adoções</h2>
+
+                <p>
+                    Acompanhe o andamento das suas solicitações de adoção.
+                </p>
+
+            </div>
+
+            {% if solicitacoes %}
+
+                <div class="lista-solicitacoes">
+
+                    {% for solicitacao in solicitacoes %}
+
+                        <article class="solicitacao-card">
+
+                            <div class="solicitacao-pet">
+
+                                {% if solicitacao.pet.foto %}
+
+                                    <img
+                                        src="{{ solicitacao.pet.foto.url }}"
+                                        alt="Foto de {{ solicitacao.pet.nome }}"
+                                    >
+
+                                {% else %}
+
+                                    {% if solicitacao.pet.especie == 'cao' %}
+
+                                        <span class="pet-icone">🐶</span>
+
+                                    {% else %}
+
+                                        <span class="pet-icone">🐱</span>
+
+                                    {% endif %}
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="solicitacao-info">
+
+                                <h3>
+                                    {{ solicitacao.pet.nome }}
+                                </h3>
+
+                                <p class="solicitacao-data">
+
+                                    <i class="fa-solid fa-calendar"></i>
+
+                                    Solicitação enviada em
+                                    {{ solicitacao.data_solicitacao|date:"d/m/Y H:i" }}
+
+                                </p>
+
+                                <div class="solicitacao-status">
+
+                                    {% if solicitacao.status == 'pendente' %}
+
+                                        <span class="status pendente">
+
+                                            <i class="fa-solid fa-clock"></i>
+
+                                            Pendente
+
+                                        </span>
+
+                                    {% elif solicitacao.status == 'aprovada' %}
+
+                                        <span class="status aprovada">
+
+                                            <i class="fa-solid fa-circle-check"></i>
+
+                                            Aprovada
+
+                                        </span>
+
+                                    {% elif solicitacao.status == 'recusada' %}
+
+                                        <span class="status recusada">
+
+                                            <i class="fa-solid fa-circle-xmark"></i>
+
+                                            Recusada
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="solicitacao-acoes">
+
+                                    <a
+                                        href="{% url 'perfil_pet' solicitacao.pet.id %}"
+                                        class="ver-pet"
+                                    >
+
+                                        Ver perfil do pet
+
+                                        <i class="fa-solid fa-arrow-right"></i>
+
+                                    </a>
+
+                                    {% if solicitacao.status == 'aprovada' %}
+
+                                        {% if solicitacao.acompanhamento_obj %}
+
+                                            <a
+                                                href="{% url 'acompanhamento_adocao' solicitacao.acompanhamento_obj.id %}"
+                                                class="acompanhar"
+                                            >
+
+                                                <i class="fa-solid fa-heart"></i>
+
+                                                Acompanhar adoção
+
+                                            </a>
+
+                                        {% else %}
+
+                                            <div class="mensagem-status">
+
+                                                <i class="fa-solid fa-circle-check"></i>
+
+                                                Sua adoção foi aprovada e o acompanhamento será iniciado em seguida.
+
+                                            </div>
+
+                                        {% endif %}
+
+                                    {% elif solicitacao.status == 'pendente' %}
+
+                                        <div class="mensagem-status">
+
+                                            <i class="fa-solid fa-hourglass-half"></i>
+
+                                            Sua solicitação está aguardando a análise do responsável pelo pet.
+
+                                        </div>
+
+                                    {% elif solicitacao.status == 'recusada' %}
+
+                                        <div class="mensagem-status">
+
+                                            <i class="fa-solid fa-circle-xmark"></i>
+
+                                            Sua solicitação não foi aprovada.
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="nenhuma-solicitacao">
+
+                    <i class="fa-solid fa-paw"></i>
+
+                    <h2>
+                        Você ainda não fez nenhuma solicitação
+                    </h2>
+
+                    <p>
+                        Encontre um pet que combine com você e envie
+                        uma solicitação de adoção.
+                    </p>
+
+                    <a
+                        href="{% url 'explorar' %}"
+                        class="btn-explorar"
+                    >
+                        Explorar pets
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

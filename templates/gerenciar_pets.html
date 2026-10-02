@@ -1,0 +1,172 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gerenciar Pets - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+    {% include 'includes/navegacao.html' %}
+
+<div class="gerenciar-pets-container">
+
+    <header class="gerenciar-pets-topo">
+
+        <a href="{% url 'explorar' %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <h1>Gerenciar Pets</h1>
+            <span>EMISA</span>
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <main class="gerenciar-pets-conteudo">
+
+        <div class="gerenciar-pets-titulo">
+
+            <h2>Pets cadastrados</h2>
+
+            <p>
+                Consulte, edite ou exclua os animais cadastrados no sistema.
+            </p>
+
+        </div>
+
+
+        {% if pets %}
+
+            <div class="lista-gerenciar-pets">
+
+                {% for pet in pets %}
+
+                    <div class="gerenciar-pet-card">
+
+                        <div class="gerenciar-pet-foto">
+
+                            {% if pet.foto %}
+
+                                <img
+                                    src="{{ pet.foto.url }}"
+                                    alt="Foto de {{ pet.nome }}"
+                                >
+
+                            {% else %}
+
+                                {% if pet.especie == 'cao' %}
+
+                                    <span>🐶</span>
+
+                                {% else %}
+
+                                    <span>🐱</span>
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="gerenciar-pet-info">
+
+                            <h3>
+                                {{ pet.nome }}
+                            </h3>
+
+                            <p>
+                                {{ pet.get_especie_display }}
+                                •
+                                {{ pet.get_porte_display }}
+                                •
+                                {{ pet.get_idade_display }}
+                            </p>
+
+                            <div class="gerenciar-pet-status">
+
+                                {% if pet.disponivel %}
+
+                                    <span class="pet-disponivel">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Disponível
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="pet-indisponivel">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Indisponível
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="gerenciar-pet-acoes">
+
+                                <a
+                                    href="{% url 'editar_pet' pet.id %}"
+                                    class="btn-editar-pet"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                    Editar
+                                </a>
+
+                                <a
+                                    href="{% url 'excluir_pet' pet.id %}"
+                                    class="btn-excluir-pet"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Excluir
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="gerenciar-pets-vazio">
+
+                <i class="fa-solid fa-paw"></i>
+
+                <h2>Nenhum pet cadastrado</h2>
+
+                <p>
+                    Ainda não existem animais cadastrados no sistema.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+</body>
+</html>

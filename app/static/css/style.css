@@ -1,0 +1,335 @@
+/* =========================================================
+   TELA DE ADOÇÃO
+========================================================= */
+
+.adocao-container {
+    width: 100%;
+    min-height: 100vh;
+
+    background: #fff7fa;
+
+    padding-bottom: 50px;
+}
+
+
+/* TOPO */
+
+.adocao-topo {
+    width: 100%;
+    height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 5%;
+
+    background: #fff7fa;
+}
+
+.adocao-topo > div {
+    text-align: center;
+}
+
+.adocao-topo h1 {
+    color: #d93673;
+
+    font-family: Georgia, serif;
+
+    font-size: 26px;
+
+    margin: 0;
+}
+
+.adocao-topo span {
+    color: #e84b83;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+}
+
+
+/* PET ESCOLHIDO */
+
+.pet-escolhido {
+    width: 90%;
+    max-width: 850px;
+
+    margin: 10px auto 20px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow: 0 4px 15px rgba(220,60,120,.08);
+}
+
+.pet-escolhido img {
+    width: 85px;
+    height: 85px;
+
+    border-radius: 15px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.pet-escolhido h2 {
+    color: #dc3f78;
+
+    font-size: 22px;
+
+    margin-bottom: 7px;
+}
+
+.pet-escolhido p {
+    color: #967884;
+
+    font-size: 12px;
+}
+
+.pet-escolhido p i {
+    color: #e84881;
+
+    margin-right: 4px;
+}
+
+
+/* FORMULÁRIO */
+
+.form-adocao {
+    width: 90%;
+    max-width: 850px;
+
+    margin: auto;
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 30px;
+
+    box-shadow: 0 5px 20px rgba(220,60,120,.08);
+}
+
+.form-adocao h2 {
+    color: #d93673;
+
+    font-size: 24px;
+
+    margin-bottom: 6px;
+}
+
+.subtitulo {
+    color: #9b7b88;
+
+    font-size: 13px;
+
+    margin-bottom: 25px;
+
+    line-height: 1.5;
+}
+
+
+/* LABELS */
+
+.form-adocao > label {
+    display: block;
+
+    color: #d83d75;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin-top: 18px;
+    margin-bottom: 7px;
+}
+
+
+/* INPUTS */
+
+.form-adocao input[type="text"],
+.form-adocao input[type="email"],
+.form-adocao input[type="tel"],
+.form-adocao textarea {
+    width: 100%;
+
+    border: 1px solid #f0cad8;
+
+    border-radius: 13px;
+
+    padding: 14px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    font-family: Arial, sans-serif;
+
+    color: #555;
+
+    background: #fffafb;
+
+    transition: .2s;
+}
+
+.form-adocao textarea {
+    resize: vertical;
+
+    min-height: 120px;
+}
+
+.form-adocao input:focus,
+.form-adocao textarea:focus {
+    border-color: #e94b85;
+
+    box-shadow: 0 0 0 3px rgba(233,75,133,.08);
+}
+
+
+/* SIM / NÃO */
+
+.opcoes-form {
+    display: flex;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+.opcoes-form label {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    background: #fff4f8;
+
+    border: 1px solid #f2d7e2;
+
+    border-radius: 20px;
+
+    padding: 9px 16px;
+
+    color: #8b6d79;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.opcoes-form label:hover {
+    background: #ffe8f1;
+}
+
+.opcoes-form input[type="radio"] {
+    accent-color: #e9437d;
+}
+
+
+/* BOTÃO */
+
+.btn-enviar-adocao {
+    width: 100%;
+    height: 55px;
+
+    margin-top: 30px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #ed3f7c;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 7px 18px rgba(230,55,120,.20);
+
+    transition: .2s;
+}
+
+.btn-enviar-adocao:hover {
+    transform: translateY(-2px);
+
+    background: #d93673;
+}
+
+.btn-enviar-adocao i {
+    margin-right: 8px;
+}
+
+
+/* RESPONSIVO */
+
+@media (max-width: 700px) {
+
+    .pet-escolhido,
+    .form-adocao {
+        width: calc(100% - 32px);
+    }
+
+    .form-adocao {
+        padding: 22px 18px;
+    }
+
+    .adocao-topo {
+        padding: 0 16px;
+    }
+
+    .pet-escolhido img {
+        width: 75px;
+        height: 75px;
+    }
+
+    .pet-escolhido h2 {
+        font-size: 20px;
+    }
+
+}
+.perfil-container {
+    width: 100% !important;
+    min-height: 100vh !important;
+    background: #fff7fa !important;
+}
+
+.perfil-topo {
+    width: 100% !important;
+    height: 75px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 5% !important;
+    background: #fff7fa !important;
+}
+
+.perfil-topo h1 {
+    color: #d93673 !important;
+    font-family: Georgia, serif !important;
+    font-size: 25px !important;
+}
+
+.perfil-info {
+    background: white !important;
+    width: 90% !important;
+    margin: -20px auto 0 !important;
+    padding: 25px 5% 40px !important;
+    border-radius: 25px 25px 0 0 !important;
+}

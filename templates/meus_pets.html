@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meus Pets - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+    {% include 'includes/navegacao.html' %}
+
+<div class="meus-pets-container">
+
+    <header class="meus-pets-topo">
+
+        <a href="{% url 'perfil_usuario' %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <h1>Meus Pets</h1>
+            <span>EMISA</span>
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <main class="meus-pets-conteudo">
+
+        <div class="meus-pets-titulo">
+
+            <div>
+                <h2>Pets para adoção</h2>
+
+                <p>
+                    Cadastre seus animais e mantenha as informações sempre atualizadas.
+                </p>
+            </div>
+
+            <a
+                href="{% url 'cadastrar_pet' %}"
+                class="btn-cadastrar-pet"
+            >
+                <i class="fa-solid fa-plus"></i>
+                Cadastrar pet
+            </a>
+
+        </div>
+
+
+        {% if pets %}
+
+            <section class="lista-meus-pets">
+
+                {% for pet in pets %}
+
+                    <div class="meu-pet-card">
+
+                        <div class="meu-pet-foto">
+
+                            {% if pet.foto %}
+
+                                <img
+                                    src="{{ pet.foto.url }}"
+                                    alt="Foto de {{ pet.nome }}"
+                                >
+
+                            {% else %}
+
+                                {% if pet.especie == 'cao' %}
+
+
+                                {% else %}
+
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="meu-pet-info">
+
+                            <h3>
+                                {{ pet.nome }}
+                            </h3>
+
+                            <p>
+                                {{ pet.get_especie_display }}
+                                •
+                                {{ pet.get_porte_display }}
+                                •
+                                {{ pet.get_idade_display }}
+                            </p>
+
+
+                            <div class="meu-pet-status">
+
+                                {% if pet.disponivel %}
+
+                                    <span class="status-pet-disponivel">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Disponível para adoção
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-pet-indisponivel">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Indisponível
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="meu-pet-acoes">
+
+                                <a
+                                    href="{% url 'editar_pet' pet.id %}"
+                                    class="btn-editar-meu-pet"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                    Editar
+                                </a>
+
+
+                                <a
+                                    href="{% url 'excluir_pet' pet.id %}"
+                                    class="btn-excluir-meu-pet"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Excluir
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </section>
+
+        {% else %}
+
+            <div class="nenhum-meu-pet">
+
+                <i class="fa-solid fa-paw"></i>
+
+                <h2>Você ainda não cadastrou nenhum pet</h2>
+
+                <p>
+                    Coloque um animal para adoção e ajude ele a encontrar um novo lar.
+                </p>
+
+                <a
+                    href="{% url 'cadastrar_pet' %}"
+                    class="btn-cadastrar-pet vazio"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Cadastrar meu pet
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+</div>
+
+</body>
+</html>

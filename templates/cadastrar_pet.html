@@ -1,0 +1,456 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastrar Pet - Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+    {% include 'includes/navegacao.html' %}
+
+    <div class="cadastrar-pet-container">
+
+        <header class="cadastrar-pet-topo">
+
+            <a
+                href="{% url 'meus_pets' %}"
+                class="voltar"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+
+            <div>
+
+                <h1>Cadastrar Pet</h1>
+
+                <span>EMISA</span>
+
+            </div>
+
+            <div></div>
+
+        </header>
+
+        <main class="cadastrar-pet-conteudo">
+
+            <div class="cadastrar-pet-card">
+
+                <div class="cadastrar-pet-titulo">
+
+                    <h2>Colocar pet para adoção</h2>
+
+                    <p>
+                        Cadastre as informações do animal para encontrar um novo lar.
+                    </p>
+
+                </div>
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+
+                    {% csrf_token %}
+
+                    <label for="nome">
+                        Nome do pet
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        placeholder="Ex.: Mel"
+                        required
+                    >
+
+                    <label for="especie">
+                        Espécie
+                    </label>
+
+                    <select
+                        id="especie"
+                        name="especie"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="cao">
+                            Cão
+                        </option>
+
+                        <option value="gato">
+                            Gato
+                        </option>
+
+                    </select>
+
+                    <label for="porte">
+                        Porte
+                    </label>
+
+                    <select
+                        id="porte"
+                        name="porte"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="pequeno">
+                            Pequeno
+                        </option>
+
+                        <option value="medio">
+                            Médio
+                        </option>
+
+                        <option value="grande">
+                            Grande
+                        </option>
+
+                    </select>
+
+                    <label for="idade">
+                        Idade
+                    </label>
+
+                    <select
+                        id="idade"
+                        name="idade"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="filhote">
+                            Filhote
+                        </option>
+
+                        <option value="adulto">
+                            Adulto
+                        </option>
+
+                    </select>
+
+                    <label>
+                        Onde o pet está?
+                    </label>
+
+                    <p>
+                        Informe o endereço onde o animal está localizado.
+                    </p>
+
+                    <label for="cepPet">
+                        CEP
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cepPet"
+                        name="cep"
+                        maxlength="9"
+                        placeholder="00000-000"
+                        required
+                    >
+
+                    <small id="statusCepPet"></small>
+
+                    <label for="estadoPet">
+                        Estado
+                    </label>
+
+                    <input
+                        type="text"
+                        id="estadoPet"
+                        name="estado"
+                        placeholder="Ex.: MG"
+                        required
+                    >
+
+                    <label for="cidadePet">
+                        Cidade
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cidadePet"
+                        name="cidade"
+                        placeholder="Cidade"
+                        required
+                    >
+
+                    <label for="bairroPet">
+                        Bairro
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bairroPet"
+                        name="bairro"
+                        placeholder="Bairro"
+                    >
+
+                    <label for="ruaPet">
+                        Rua / Estrada
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ruaPet"
+                        name="rua"
+                        placeholder="Rua ou estrada"
+                    >
+
+                    <label for="numeroPet">
+                        Número
+                    </label>
+
+                    <input
+                        type="text"
+                        id="numeroPet"
+                        name="numero"
+                        placeholder="Número"
+                    >
+
+                    <label for="complementoPet">
+                        Complemento / Referência
+                    </label>
+
+                    <input
+                        type="text"
+                        id="complementoPet"
+                        name="complemento"
+                        placeholder="Ex.: próximo à praça"
+                    >
+
+                    <div class="checkbox-zona-rural">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                name="zona_rural"
+                            >
+
+                            O pet está em uma zona rural
+
+                        </label>
+
+                    </div>
+
+                    <label>
+                        Saúde
+                    </label>
+
+                    <div class="checkbox-pet">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                name="vacinado"
+                            >
+
+                            Vacinado
+
+                        </label>
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                name="castrado"
+                            >
+
+                            Castrado
+
+                        </label>
+
+                    </div>
+
+                    <label for="temperamento">
+                        Temperamento
+                    </label>
+
+                    <input
+                        type="text"
+                        id="temperamento"
+                        name="temperamento"
+                        placeholder="Ex.: dócil, brincalhão..."
+                    >
+
+                    <label for="descricao">
+                        Sobre o pet
+                    </label>
+
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        rows="6"
+                        placeholder="Conte um pouco sobre o animal..."
+                    ></textarea>
+
+                    <label>
+                        Disponibilidade
+                    </label>
+
+                    <div class="checkbox-pet">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                name="disponivel"
+                                checked
+                            >
+
+                            Disponível para adoção
+
+                        </label>
+
+                    </div>
+
+                    <label for="foto">
+                        Foto do pet
+                    </label>
+
+                    <input
+                        type="file"
+                        id="foto"
+                        name="foto"
+                        accept="image/*"
+                    >
+
+                    <button
+                        type="submit"
+                        class="btn-cadastrar-meu-pet"
+                    >
+
+                        <i class="fa-solid fa-paw"></i>
+
+                        Cadastrar pet para adoção
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+
+        const cepPet =
+            document.getElementById("cepPet");
+
+        if (cepPet) {
+
+            cepPet.addEventListener(
+                "blur",
+                function () {
+
+                    let cep =
+                        cepPet.value.replace(
+                            /\D/g,
+                            ""
+                        );
+
+                    if (cep.length !== 8) {
+                        return;
+                    }
+
+                    fetch(
+                        `https://viacep.com.br/ws/${cep}/json/`
+                    )
+                    .then(
+                        resposta => resposta.json()
+                    )
+                    .then(
+                        dados => {
+
+                            if (dados.erro) {
+
+                                document.getElementById(
+                                    "statusCepPet"
+                                ).textContent =
+                                    "CEP não encontrado.";
+
+                                return;
+                            }
+
+                            document.getElementById(
+                                "estadoPet"
+                            ).value =
+                                dados.uf || "";
+
+                            document.getElementById(
+                                "cidadePet"
+                            ).value =
+                                dados.localidade || "";
+
+                            document.getElementById(
+                                "bairroPet"
+                            ).value =
+                                dados.bairro || "";
+
+                            document.getElementById(
+                                "ruaPet"
+                            ).value =
+                                dados.logradouro || "";
+
+                            document.getElementById(
+                                "statusCepPet"
+                            ).textContent =
+                                "Endereço localizado.";
+
+                        }
+                    )
+                    .catch(
+                        () => {
+
+                            document.getElementById(
+                                "statusCepPet"
+                            ).textContent =
+                                "Não foi possível consultar o CEP.";
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

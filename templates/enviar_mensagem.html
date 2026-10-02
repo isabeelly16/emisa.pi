@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Mensagem - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+    {% include 'includes/navegacao.html' %}
+
+<div class="enviar-mensagem-container">
+
+    <header class="enviar-mensagem-topo">
+
+        <a href="{% url 'mensagens' %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <h1>Nova Mensagem</h1>
+            <span>EMISA</span>
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <main class="enviar-mensagem-conteudo">
+
+        <div class="enviar-mensagem-card">
+
+            <div class="enviar-mensagem-titulo">
+
+                <div class="icone-mensagem">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+
+                <div>
+                    <h2>Enviar mensagem</h2>
+
+                    <p>
+                        Escolha um usuário e escreva sua mensagem.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <label for="destinatario">
+                    Destinatário
+                </label>
+
+                <select
+                    name="destinatario"
+                    id="destinatario"
+                    required
+                >
+
+                    <option value="">
+                        Selecione um usuário
+                    </option>
+
+                    {% for usuario in usuarios %}
+
+                        <option value="{{ usuario.id }}">
+                            {{ usuario.first_name|default:usuario.username }}
+                            — {{ usuario.email }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <label for="mensagem">
+                    Mensagem
+                </label>
+
+                <textarea
+                    name="mensagem"
+                    id="mensagem"
+                    rows="7"
+                    maxlength="1000"
+                    placeholder="Digite sua mensagem..."
+                    required
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="btn-enviar-mensagem"
+                >
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Enviar mensagem
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Excluir Pet - Emisa</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+    {% include 'includes/navegacao.html' %}
+
+    <div class="excluir-pet-container">
+
+        <header class="excluir-pet-topo">
+
+            <a
+                href="{% url 'meus_pets' %}"
+                class="voltar"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </a>
+
+            <div>
+
+                <h1>Excluir Pet</h1>
+
+                <span>EMISA</span>
+
+            </div>
+
+            <div></div>
+
+        </header>
+
+        <main class="excluir-pet-conteudo">
+
+            <div class="excluir-pet-card">
+
+                <div class="excluir-icone">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </div>
+
+                <h2>
+                    Excluir {{ pet.nome }}?
+                </h2>
+
+                <p>
+                    Tem certeza que deseja excluir este pet?
+                    Essa ação não poderá ser desfeita.
+                </p>
+
+                {% if pet.foto %}
+
+                    <img
+                        src="{{ pet.foto.url }}"
+                        alt="Foto de {{ pet.nome }}"
+                        class="excluir-pet-foto"
+                    >
+
+                {% else %}
+
+                    <div class="excluir-pet-sem-foto">
+
+                        {% if pet.especie == 'cao' %}
+                            🐶
+                        {% else %}
+                            🐱
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+                <div class="excluir-pet-acoes">
+
+                    <a
+                        href="{% url 'meus_pets' %}"
+                        class="btn-cancelar-exclusao"
+                    >
+                        Cancelar
+                    </a>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn-confirmar-exclusao"
+                        >
+
+                            <i class="fa-solid fa-trash"></i>
+
+                            Excluir pet
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

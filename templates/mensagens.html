@@ -1,0 +1,163 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mensagens - Emisa</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+    {% include 'includes/navegacao.html' %}
+
+<div class="mensagens-container">
+
+    <header class="mensagens-topo">
+
+        <a href="{% url 'explorar' %}" class="voltar">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div>
+            <h1>Mensagens</h1>
+            <span>EMISA</span>
+        </div>
+
+        <div></div>
+
+    </header>
+
+
+    <main class="mensagens-conteudo">
+
+        <div class="mensagens-titulo">
+            <h2>Suas mensagens</h2>
+
+            <p>
+                Entre em contato com os usuários do Emisa.
+            </p>
+        </div>
+
+
+        <section class="bloco-mensagens">
+
+            <div class="titulo-mensagens">
+                <h3>
+                    <i class="fa-solid fa-comments"></i>
+                    Conversas
+                </h3>
+            </div>
+
+
+            {% if usuarios %}
+
+                <div class="lista-mensagens">
+
+                    {% for usuario in usuarios %}
+
+                        <a
+                            href="{% url 'conversa' usuario.id %}"
+                            class="mensagem-card mensagem-link"
+                        >
+
+                            <div class="mensagem-icone">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+                            <div class="mensagem-info">
+
+                                <strong>
+                                    {{ usuario.first_name|default:usuario.username }}
+                                </strong>
+
+                                {% with ultima_mensagem=usuario.mensagens_enviadas.all.last %}
+
+                                    {% if ultima_mensagem %}
+                                        <p>
+                                            {{ ultima_mensagem.mensagem }}
+                                        </p>
+
+                                        <small>
+                                            {{ ultima_mensagem.data_envio|date:"d/m/Y H:i" }}
+                                        </small>
+
+                                    {% else %}
+
+                                        {% with ultima_recebida=usuario.mensagens_recebidas.all.last %}
+
+                                            {% if ultima_recebida %}
+
+                                                <p>
+                                                    {{ ultima_recebida.mensagem }}
+                                                </p>
+
+                                                <small>
+                                                    {{ ultima_recebida.data_envio|date:"d/m/Y H:i" }}
+                                                </small>
+
+                                            {% else %}
+
+                                                <p>
+                                                    Clique para abrir a conversa.
+                                                </p>
+
+                                            {% endif %}
+
+                                        {% endwith %}
+
+                                    {% endif %}
+
+                                {% endwith %}
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right mensagem-seta"></i>
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="mensagens-vazio">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                    <p>
+                        Você ainda não possui nenhuma conversa.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <a
+            href="{% url 'enviar_mensagem' %}"
+            class="btn-nova-mensagem"
+        >
+            <i class="fa-solid fa-pen"></i>
+            Nova mensagem
+        </a>
+
+    </main>
+
+</div>
+
+</body>
+</html>
